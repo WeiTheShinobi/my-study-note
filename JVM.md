@@ -4,8 +4,6 @@
 
 <img src="./image/jvm/jvm01.png">
 
-
-
 # 加載器與雙親委派
 
 <img src="./image/jvm/jvm02.png">
