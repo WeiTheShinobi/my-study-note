@@ -2,7 +2,7 @@
 
 # JVM 結構
 
-![jvm01](image\jvm\jvm01.png)
+<img src="./image/jvm/jvm01.png">
 
 
 
