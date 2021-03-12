@@ -8,7 +8,7 @@
 
 # 加載器與雙親委派
 
-![jvm02](image\jvm\jvm02.png)
+<img src="./image/jvm/jvm02.png">
 
 加載器：
 
