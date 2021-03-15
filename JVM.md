@@ -1,5 +1,9 @@
 # JVM
 
+> 筆記作者：葉高緯 Wei the Shinobi
+>
+> 參考資料：[【狂神说Java】JVM快速入门篇](https://www.bilibili.com/video/BV1iJ411d7jS)
+
 # JVM 結構
 
 <img src="./image/jvm/jvm01.png">
