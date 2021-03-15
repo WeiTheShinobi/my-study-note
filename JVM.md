@@ -20,11 +20,13 @@
 - 先找根加載器，如果沒有
 - 找擴展類加載器，如果沒有
 - 找應用程式加載器（我們寫的程式）
-- 如果都沒有，ClassNotFoundExcption
+- 如果都沒有，ClassNotFoundException
 
 
 
 
 
 
+
+# 待更新
 
