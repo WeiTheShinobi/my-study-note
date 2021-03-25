@@ -62,7 +62,287 @@ Lock的實現類：ReentrantLock、ReadLock、WriteLock
 5. Synchornized 可重入鎖，不可中斷，非公平；Lock可重入鎖，可以判斷鎖，非公平（可設置）。
 6. Synchornized 有程式碼鎖和方法鎖，Lock只有程式碼鎖。
 
+# 生產者與消費者
 
+## 判斷等待、業務、通知
+
+假設現在有兩條執行緒，
+
+一條負責生產漢堡，
+
+一條負責販賣。
+
+一個標準的流程就是
+
+1. **判斷等待**
+2. **業務**
+3. **通知**
+
+```java
+// 判斷等待
+if(漢堡 != 0) {
+    wait();
+}
+// 業務
+漢堡++;
+// 通知
+notifyAll();
+```
+
+然後也會有個的販售者執行緒，
+
+一旦漢堡產出就會賣掉。
+
+```java
+// 判斷等待
+if(漢堡 == 0) {
+    wait();
+}
+// 業務
+漢堡--;
+// 通知
+notifyAll();
+```
+
+漢堡數量只會是1或0。
+
+## 虛假喚醒
+
+只有兩條執行緒的情況下沒問題，
+
+但是如果有更多的執行緒可能會發生**虛假喚醒**，
+
+```java
+if(漢堡狀態) {
+    wait();
+}
+```
+
+這是因為 if 只會判斷一次，
+
+多個生產漢堡的執行緒可能就會產出超過1個漢堡，
+
+**解決的方法是將 if 改成 while 即可。**
+
+## JUC版本
+
+### 與傳統對照
+
+- Synchroized -> Lock
+- wait -> await
+- notify -> signal
+
+```java
+Lock lock = new ReentrantLock();
+Condition condition = lock.newCondition();
+```
+
+按照對應表將傳統的方法替換成JUC版本即可。
+
+```java
+lock.lock();
+condition.await();
+condition.signalAll();
+lock.unlock();
+```
+
+### JUC精確喚醒
+
+你可以建構多個監視器來達成精確喚醒，
+
+例如我希望A -> B -> C，
+
+但是執行緒的順序是隨機的，
+
+我該怎麼辦？
+
+```java
+Condition conditionA = lock.newCondition();
+Condition conditionB = lock.newCondition();
+Condition conditionC = lock.newCondition();
+```
+
+創建多個監視器，然後在方法結束時設定你想要喚醒的執行緒。
+
+```java
+void threadA() {
+    // 略
+    conditionB.signal();
+}
+
+void threadB() {
+    // 略
+    conditionC.signal();
+}
+
+void threadC() {
+    // 略
+    conditionA.signal();
+}
+```
+
+# 鎖的一些問題
+
+我們執行兩條執行緒，
+
+發送簡訊先，
+
+但是他的方法會睡4秒，
+
+然後是打電話。
+
+```java
+public class Lock8 {
+    public static void main(String[] args) {
+        Phone phone = new Phone();
+
+        new Thread(()->{
+            phone.sendSms();
+        }).start();
+
+        new Thread(()->{
+            phone.call();
+        }).start();
+    }
+}
+```
+
+```java
+
+class Phone {
+    public synchronized void sendSms(){
+        try {
+            TimeUnit.SECONDS.sleep(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("簡訊");
+    }
+
+    public synchronized void call(){
+        System.out.println("電話");
+    }
+}
+```
+
+現在的問題是，
+
+輸出的結果會是如何？
+
+是簡訊先還是電話先？
+
+**答案是簡訊依然先**，
+
+雖然他睡了4秒，
+
+但是 synchronized 這個關鍵字**鎖的是執行方法的物件**。
+
+而不是**物件**。
+
+> 沒有 synchronized 的方法和有鎖的方法同時執行，並不會被鎖住。
+
+---
+
+那如果把sendSms和call改成靜態方法，
+
+且將物件改成兩個分開執行會如何？
+
+兩個不同的物件一個執行簡訊，
+
+另一個執行打電話，
+
+應該是打電話先，
+
+因為簡訊方法內延遲了4秒，
+
+```java
+Phone phone1 = new Phone();
+Phone phone2 = new Phone();
+```
+
+```java
+    public static synchronized void sendSms(){
+        try {
+            TimeUnit.SECONDS.sleep(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("簡訊");
+    }
+
+    public static synchronized void call(){
+        System.out.println("電話");
+    }
+```
+
+輸出結果會是**簡訊先**。
+
+因為靜態方法鎖的是Phone.class，
+
+這是全局唯一的。
+
+---
+
+```java
+ 	public static synchronized void sendSms(){
+        try {
+            TimeUnit.SECONDS.sleep(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("簡訊");
+    }
+
+    public synchronized void call(){
+        System.out.println("電話");
+    }
+```
+
+一個是靜態方法，一個是普通方法，一個物件的情況，
+
+簡訊跟打電話哪個會先呢？
+
+答案是打電話，
+
+因為兩者鎖的對象不一樣，
+
+一個是Phone.class，
+
+一個是new出來的物件，
+
+所以互不影響，
+
+那沒有睡的打電話就會先了。
+
+# 集合類不安全
+
+在併發時，
+
+ArrayList不安全，
+
+可能出現併發修改異常，
+
+解決方案：
+
+```java
+List<String> list = new Vector<>();
+List<String> list = Collections.synchronizedList(new ArrayList<>());
+List<String> list = new CopyOnWriteArrayList<>();
+```
+
+CopyOnWrite寫入時複製（推薦使用）。
+
+---
+
+set的解決方案也是這樣，
+
+畢竟他們都繼承了Collections，
+
+補充：set的底層就是map。
+
+```java
+Map<String,String> map = new ConcurrentHashMap<>();
+```
 
 
 
