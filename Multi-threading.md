@@ -16,7 +16,7 @@
 
 Java默認兩個執行緒：main、GC
 
-**Java真的可以開啟執行緒嗎？**不能。
+**Java真的可以開啟執行緒嗎**？不能。
 
 點進Thread方法可以看到他最終會調用start0，
 
@@ -45,7 +45,7 @@ public enum State {
 
 - Synchornized 
 
-- interface Lock
+- Interface Lock
 
 Lock的實現類：ReentrantLock、ReadLock、WriteLock
 
@@ -123,6 +123,12 @@ if(漢堡狀態) {
 多個生產漢堡的執行緒可能就會產出超過1個漢堡，
 
 **解決的方法是將 if 改成 while 即可。**
+
+```java
+while(漢堡狀態) {
+    wait();
+}
+```
 
 ## JUC版本
 
