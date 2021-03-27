@@ -8,7 +8,7 @@
 
 裡面有關於多執行緒的一些東西
 
-簡單點像是Thread或是Runable，但相較callable略為慢一點。
+簡單點像是`Thread`或是`Runable`，但相較`callable`略為慢一點。
 
 # 處理程序（進程）與多執行緒（多線程）
 
@@ -18,9 +18,9 @@ Java默認兩個執行緒：main、GC
 
 **Java真的可以開啟執行緒嗎**？不能。
 
-點進Thread方法可以看到他最終會調用start0，
+點進`Thread`可以看到他最終會調用`start0`，
 
-這是一個native方法。
+這是一個`native`方法。
 
 ## 多執行緒的狀態 
 
@@ -118,11 +118,11 @@ if(漢堡狀態) {
 }
 ```
 
-這是因為 if 只會判斷一次，
+這是因為 `if` 只會判斷一次，
 
 多個生產漢堡的執行緒可能就會產出超過1個漢堡，
 
-**解決的方法是將 if 改成 while 即可。**
+**解決的方法是將 `if` 改成 `while` 即可。**
 
 ```java
 while(漢堡狀態) {
@@ -241,15 +241,15 @@ class Phone {
 
 雖然他睡了4秒，
 
-但是 synchronized 這個關鍵字**鎖的是執行方法的物件**。
+但是 `synchronized` 這個關鍵字**鎖的是執行方法的物件**。
 
 而不是**物件**。
 
-> 沒有 synchronized 的方法和有鎖的方法同時執行，並不會被鎖住。
+> 沒有 `synchronized` 的方法和有鎖的方法同時執行，並不會被鎖住。
 
 ---
 
-那如果把sendSms和call改成靜態方法，
+那如果把`sendSms()`和`call()`改成靜態方法，
 
 且將物件改成兩個分開執行會如何？
 
@@ -283,7 +283,7 @@ Phone phone2 = new Phone();
 
 輸出結果會是**簡訊先**。
 
-因為靜態方法鎖的是Phone.class，
+因為靜態方法鎖的是`Phone.class`，
 
 這是全局唯一的。
 
@@ -312,9 +312,9 @@ Phone phone2 = new Phone();
 
 因為兩者鎖的對象不一樣，
 
-一個是Phone.class，
+一個是`Phone.class`，
 
-一個是new出來的物件，
+一個是`new`出來的物件，
 
 所以互不影響，
 
@@ -324,7 +324,7 @@ Phone phone2 = new Phone();
 
 在併發時，
 
-ArrayList不安全，
+`ArrayList`不安全，
 
 可能出現併發修改異常，
 
@@ -336,19 +336,111 @@ List<String> list = Collections.synchronizedList(new ArrayList<>());
 List<String> list = new CopyOnWriteArrayList<>();
 ```
 
-CopyOnWrite寫入時複製（推薦使用）。
+`CopyOnWrite`寫入時複製（推薦使用）。
 
 ---
 
-set的解決方案也是這樣，
+`set`的解決方案也是這樣，
 
-畢竟他們都繼承了Collections，
+畢竟他們都繼承了`Collections`，
 
-補充：set的底層就是map。
+補充：`set`的底層就是`map`。
 
 ```java
 Map<String,String> map = new ConcurrentHashMap<>();
 ```
+
+# Interface Callable\<V\>
+
+1. 可以有返回值
+2. 可以拋出異常
+
+```java
+// Interface Callable 裡的方法。
+V call() throws Exception;
+```
+
+這個泛型\<V\>等於方法的返回值。
+
+```java
+// new Thread(new Runnable());
+// new Thread(new FutureTask<V>());
+// new Thread(new FutureTask<V>(Callable));
+
+MyThread thread = new MyThread(); //MyThread實現了Callable介面
+FutureTask futureTask = new FutureTask(thread);
+
+new Thread(futureTask).start();
+```
+
+你可以使用`get()`來得到回傳值。
+
+```java
+Object o = futureTask.get();
+```
+
+但是這個方法**可能會發生阻塞**，
+
+你得**放在最後**或**使用異步**。
+
+# 常用的輔助類
+
+## CountDownLatch
+
+倒計時計數器，
+
+建構子需要傳入`int`。
+
+```java
+CountDownLatch countDownLatch = new CountDownLatch(6);
+```
+
+```java
+// 業務
+countDownLatch.countDown(); // 計數器 -1
+
+countDownLatch.await();     // 等待計數器歸零才向下執行
+```
+
+非常簡單，適用於需要先完成某些方法。
+
+每次有執行緒調用`countDown()`數量就會-1，
+
+計數器變成0，
+
+`await()`就會被喚醒繼續執行。
+
+## CyclicBarrier
+
+加法計數器
+
+```java
+CyclicBarrier cyclicBarrier = new CyclicBarrier(10,new Runnable());
+// 當有十條執行緒在cyclicBarrier.await()，就會執行後面的Runnable();
+
+cyclicBarrier.await();
+```
+
+## Semaphore
+
+信號量
+
+可以理解為停車場
+
+```java
+Semaphore semaphore = new Semaphore(5);
+
+semaphore.acquire();
+semaphore.release();
+```
+
+在執行緒中，取得停車位`acquire()`，
+
+如果停車位滿了，其他執行緒就要等待，
+
+停車完的執行緒調用`semaphore.release()`釋放停車位。
+
+
 
 
 
