@@ -440,6 +440,24 @@ semaphore.release();
 
 停車完的執行緒調用`semaphore.release()`釋放停車位。
 
+# ReadWriteLock
+
+讀寫鎖
+
+獨佔鎖（寫鎖）一次只能被一個線程佔有
+
+共享鎖（讀鎖）多個線程可以同時佔有
+
+```java
+ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+// 寫入資料時用writeLock()
+readWriteLock.writeLock().lock();
+readWriteLock.writeLock().unlock();
+// 讀取資料用readLock()
+readWriteLock.readLock().lock();
+readWriteLock.readLock().lock();
+```
+
 
 
 

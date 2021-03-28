@@ -299,7 +299,44 @@ book1.author = "monkey"
 
 # Go 的物件導向
 
+```go
+type person struct {
+   age int
+   name string
+}
 
+func (p *person) Age() int {
+   return p.age
+}
+
+func (p *person) SetAge(age int) {
+   p.age = age
+}
+
+func (p *person) Name() string {
+   return p.name
+}
+
+func (p *person) SetName(name string) {
+   p.name = name
+}
+```
+
+Go語言的getter/setter與Java不同，
+
+需要傳遞指標，
+
+否則setter不會改變數值。
+
+> **注意：首字母大小寫決定了外部能否訪問，首字母大寫類似於`public`。**
+
+## 繼承
+
+```go
+type student struct {
+   Person
+}
+```
 
 
 
