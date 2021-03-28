@@ -322,11 +322,9 @@ func (p *person) SetName(name string) {
 }
 ```
 
-Go語言的getter/setter與Java不同，
+Go語言的修改數值時需要傳遞指標，
 
-需要傳遞指標，
-
-否則setter不會改變數值。
+否則`setter`不會改變數值。
 
 > **注意：首字母大小寫決定了外部能否訪問，首字母大寫類似於`public`。**
 
@@ -335,6 +333,22 @@ Go語言的getter/setter與Java不同，
 ```go
 type student struct {
    Person
+}
+```
+
+## 多型
+
+Go語言中，
+
+實現介面不用特別宣告，
+
+只要實作它的方法即可。
+
+```go
+// 本質是個指標
+type animal interface {
+   sleep() string
+   eat()
 }
 ```
 

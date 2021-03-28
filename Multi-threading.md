@@ -458,11 +458,272 @@ readWriteLock.readLock().lock();
 readWriteLock.readLock().lock();
 ```
 
+# BlockingQueue
+
+先進先出。
+
+與`Set`和`List`一樣，`BlockingQueue`也實作了`Collection`。
+
+什麼情況會用到？多線程併發、線程池
+
+```java
+ArrayBlockingQueue blockingQueue = new ArrayBlockingQueue<>(3); // 傳入大小
+```
+
+## 四組API
+
+| 方式       | 拋出異常 | 回傳值，不拋異常 | 阻塞 等待 | 超時等待 |
+| :--------- | -------- | ---------------- | --------- | -------- |
+| 添加       | add      | offer            | put       | offer()  |
+| 移除       | remove   | poll             | take      | poll()   |
+| 判斷對列首 | element  | peek             | -         | -        |
+
+> **超時等待的方法需要傳入時間參數。**
+
+### SynchronousQueue
+
+和其他的BlockingQueue不同，
+
+SynchronousQueue如果`put`了一個元素進去，
+
+必須先`take`出來，
+
+否則不能再放進去。
+
+ ```java
+BlockingQueue<String> synchronousQueue = new SynchronousQueue<>();
+ ```
+
+# 線程池（重點）
+
+優化資源的使用，更加快速。
+
+```java
+ExecutorService threadPool1 = Executors.newSingleThreadExecutor();  // 單個線程
+ExecutorService threadPool3 = Executors.newFixedThreadPool(10);     // 創建一個固定大小的線程
+ExecutorService threadPool2 = Executors.newCachedThreadPool();      // 動態大小
+
+// 有線程池後就使用它來創建
+threadPool1.execute(new Runnable() {
+    @Override
+    public void run() {
+        System.out.println("haha");
+    }
+});
+```
+
+## 七大參數
+
+原始碼分析
+
+```java
+public static ExecutorService newSingleThreadExecutor() {
+    return new FinalizableDelegatedExecutorService
+        (new ThreadPoolExecutor(1, 1,
+                                0L, TimeUnit.MILLISECONDS,
+                                new LinkedBlockingQueue<Runnable>()));
+}
+public static ExecutorService newCachedThreadPool() {
+    return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                                  60L, TimeUnit.SECONDS,
+                                  new SynchronousQueue<Runnable>());
+}
+public static ExecutorService newFixedThreadPool(int nThreads) {
+    return new ThreadPoolExecutor(nThreads, nThreads,
+                                  0L, TimeUnit.MILLISECONDS,
+                                  new LinkedBlockingQueue<Runnable>());
+}
+```
+
+進入原始碼我們可以發現，
+
+他們都是調用`ThreadPoolExecutor()`，
+
+再次點入`ThreadPoolExecutor()`的原始碼，
+
+```java
+public ThreadPoolExecutor(int corePoolSize,
+                          int maximumPoolSize,
+                          long keepAliveTime,
+                          TimeUnit unit,
+                          BlockingQueue<Runnable> workQueue,
+                          ThreadFactory threadFactory,
+                          RejectedExecutionHandler handler) {
+    if (corePoolSize < 0 ||
+        maximumPoolSize <= 0 ||
+        maximumPoolSize < corePoolSize ||
+        keepAliveTime < 0)
+        throw new IllegalArgumentException();
+    if (workQueue == null || threadFactory == null || handler == null)
+        throw new NullPointerException();
+    this.corePoolSize = corePoolSize;
+    this.maximumPoolSize = maximumPoolSize;
+    this.workQueue = workQueue;
+    this.keepAliveTime = unit.toNanos(keepAliveTime);
+    this.threadFactory = threadFactory;
+    this.handler = handler;
+}
+```
+
+來看看這些參數
+
+```java
+public ThreadPoolExecutor(int corePoolSize,  // 核心線程數
+                          int maximumPoolSize, // 最大線程數
+                          long keepAliveTime,  // 額外線程的閒置存活時間
+                          TimeUnit unit,  // 時間單位
+                          BlockingQueue<Runnable> workQueue,  // 阻塞隊列
+                          ThreadFactory threadFactory,  // 線程工廠
+                          RejectedExecutionHandler handler) // 拒絕策略
+```
+
+線程池就像一間銀行，核心線程數是平時櫃檯的數量，
+
+當核心線程數達到了，多的線程會去候位區（阻塞隊列）中，
+
+當阻塞隊列也滿了，銀行就會加開櫃檯，
+
+一直到最大線程數，
+
+如果這也滿了，就會發動拒絕策略。
+
+最後客人都走了，
+
+加開櫃檯（超出核心線程數的線程）在超過閒置存活時間後便會關閉。
+
+## 四大拒絕策略
+
+`Interface RejectedExecutionHandler`有四個實現類，
+
+```java
+new ThreadPoolExecutor.AbortPolicy()          // 不理人，拋出異常
+new ThreadPoolExecutor.CallerRunsPolicy()     // 哪裡來的回哪裡（例如main線程）
+new ThreadPoolExecutor.DiscardPolicy()        // 拋棄任務，不會拋出異常
+new ThreadPoolExecutor.DiscardOldestPolicy()  // 嘗試和最早的競爭，不會拋出異常
+```
+
+## 最大線程該如何決定？
+
+1. CPU密集型
+
+   - 從CPU可以同時跑多少線程來決定，如何動態得知？
+
+   - ```java
+     Runtime.getRuntime().availableProcessors() // 返回CPU能同時執行的最大線程數。
+     ```
+
+     
+
+2. IO密集型
+
+   - 判斷你的程式中十分耗IO的線程，如果有n個，就是n*2個最大線程。
+
+# 四大函數式介面（重點、必須掌握）
+
+現代工程師應該掌握的：lambda表達式、鍊式編程、函數式介面、Stream流式計算
+
+`@FunctionalInterface`
+
+**函數式介面：只有一個方法的介面。**
+
+例如`Runnable`。
+
+## 函數式介面
+
+自訂輸入輸出
+
+```java
+// 回傳輸入的值
+Function function = new Function<String,String>() {
+    @Override
+    public String apply(String str) {
+        return str;
+    }
+};
+
+// lambda表達式
+Function<String,String> function2 = (str)->str;
+```
+
+## 斷定式介面
+
+回傳布林
+
+```java
+// 判斷傳入值是否為空
+Predicate<String> predicate = new Predicate<String>() {
+    @Override
+    public boolean test(String str) {
+        return str.isEmpty();
+    }
+};
+
+// lambda表達式
+Predicate<String> predicate2 = (str)->str.isEmpty();
+```
+
+## 消費型介面
+
+無回傳值
+
+```java
+// println傳入值
+Consumer<String> consumer = new Consumer<String>() {
+    @Override
+    public void accept(String s) {
+        System.out.println(s);
+    }
+};
+
+// lambda表達式
+Consumer<String> consumer2 = (str)-> System.out.println(str);
+```
+
+## 供給型介面
+
+只有返回值
+
+```java
+// 回傳"hello"
+Supplier<String> supplier = new Supplier<String>() {
+    @Override
+    public String get() {
+        return "hello";
+    }
+};
+
+// lambda表達式
+Supplier<String> supplier2  = ()->"hello";
+```
+
+---
+
+## Stream流式計算
+
+把計算都交給`Stream`
+
+```java
+List<Integer> list = new ArrayList<>();
+```
+
+現在有一個`list`
+
+使用`list.stream()`
+
+這個`strea()`中有很多方法可以對`list`的內容做判斷。
+
+例子：
+
+```java
+// 通過filter()得到list中大於2的值
+list.stream().filter((i)->i>2).forEach(System.out::println);
+```
 
 
 
 
 
 
-# 待更新
+
+待更新
 
