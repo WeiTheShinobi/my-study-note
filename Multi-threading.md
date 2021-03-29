@@ -719,6 +719,28 @@ List<Integer> list = new ArrayList<>();
 list.stream().filter((i)->i>2).forEach(System.out::println);
 ```
 
+# ForkJoin
+
+將一個任務拆分成數個小的子任務，
+
+每個子任務都會有結果，
+
+最終將所有結果彙整。
+
+## ForkJoin 特點：工作竊取
+
+這裡面維護的都是雙端隊列。
+
+假如有線程A和線程B，
+
+線程A的工作先做完了，
+
+它會把線程B的工作偷過來執行，
+
+以提高效率。
+
+
+
 
 
 

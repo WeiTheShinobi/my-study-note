@@ -352,6 +352,182 @@ type animal interface {
 }
 ```
 
+# interface{} 通用萬能類型
+
+```go
+func myFunc(arg interface{}) {
+    fmt.Println(arg)
+    
+    // 還可以類型判斷
+    value, ok := arg.(string)
+    // value 為傳入值 arg
+    // ok 為布林值 會判斷arg是不是string
+}
+```
+
+`interface{}`可以填入任何的物件或是基本類型。
+
+# pair
+
+- 變數
+  - type
+    - static type：int, string...
+    - concrete type：interface所指向的的具體數據類型
+  - value
+
+每個變數都有一個type和value，
+
+我們稱為pair
+
+```go
+a := "abc"
+// pair<type:string, value:"abc">
+```
+
+# 反射
+
+```go
+reflect.TypeOf()
+reflect.ValueOf()
+```
+
+# 多線程
+
+```go
+go newTask()
+```
+
+創建一個Goroutine去執行`newTask()`，
+
+也可以用`go`創建匿名方法，
+
+```go
+go func() {
+    // ...
+    
+    func () {
+        // ...
+        runtime.Goexit()
+        // 此方法可提早離開整個函式
+    }()
+    // 尾端加上小括號來調用，否則就只是定義函式而沒有執行。
+}()
+```
+
+在匿名函式內再寫一個匿名函式，
+
+在尾端加上小括號代表調用。
+
+返回值和傳入值
+
+```go
+go func(a int) bool {
+    // ...
+}(20)
+
+// 你不能直接得到返回值，goroutine要通信的話，要使用通道才能。
+```
+
+## 通道 channel
+
+這裡簡單的示範了如何使用通道
+
+```go
+func main() {
+
+   // 創建通道
+   c := make(chan int)
+
+   // goroutine 跑一個匿名執行緒
+   go func() {
+      // defer關鍵字 函式結束時執行
+      defer fmt.Println("thread end")
+
+      fmt.Println("透過通道傳遞變數")
+
+      // 將資料放進通道中
+      c <- 123
+       
+       // 關閉通道
+      close(c)
+   }()
+
+   // 從通道中拿取資料
+   // ok可以得到布林值
+   num, ok := <-c
+
+   fmt.Println(num)
+   fmt.Println(ok)
+}
+```
+
+main線程如果先到達拿取`c`的資料，但go還沒到，main會阻塞，等待go把資料放入c；
+
+反之，go先到，把資料放入c，go便會阻塞，**因為沒有緩存**，等到main拿到才結束。
+
+簡單的說，沒有緩存，他們是同時，就像一個人把東西拿給另一個人，你不能放在地上。
+
+那如果有緩存不就可以一直放一直取？
+
+```GO
+func main() {
+
+   // 創建通道，現在有了緩存
+   c := make(chan int,3)
+   // 目前裝了多少東西與最大容量
+   fmt.Println(len(c),cap(c))
+
+   // goroutine 跑一個匿名執行緒
+   go func() {
+      // defer關鍵字 函式結束時執行
+      defer fmt.Println("thread end")
+
+      fmt.Println("透過通道傳遞變數")
+
+      // 將資料放進通道中
+      c <- 123
+      c <- 456
+      c <- 789
+      
+       // 關閉通道
+      close(c)
+   }()
+
+   //從通道中拿取資料
+   num := <-c
+   num2 := <-c
+   num3 := <-c
+
+   fmt.Println(num)
+   fmt.Println(num2)
+   fmt.Println(num3)
+
+}
+```
+
+## 表達式
+
+```go
+if data, ok := <-c; ok{
+   fmt.Println(data)
+   fmt.Println(ok)
+}
+```
+
+`data`和`ok`先被`<-c`給付值，
+
+然後再來判斷`ok`是否為`true`。
+
+```go
+for data := range c{
+   fmt.Println(data)
+}
+```
+
+使用`range`，
+
+用法類似python。
+
 
 
 
