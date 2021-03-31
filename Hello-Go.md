@@ -528,11 +528,45 @@ for data := range c{
 
 用法類似python。
 
+## select
 
+單流程下一個`go`只能監控一個`channel`的狀態，`select`可以完成監控多個`channel`的狀態。
 
+```go
+select {
+    case channel1 <- x: // 如果可寫，則執行業務
+    // 業務
+    case <- channel2: // 如果可讀，則執行業務
+    // 業務
+}
+```
 
+可以把它當成Go語言的`switch`語句。
 
-待更新...
+# Go modules
+
+Go modules類似於Maven，是一個依賴管理工作，集成在Go的工具箱中，只要安裝Go便可使用，
+
+- 解決了Go的依賴管理問題
+- 淘汰了GOPATH的工作模式
+  - GOPATH無版本控制概念
+  - GOPATH無法指定第三方的版本號
+  - GOPATH無法同步一致第三方版本號
+- 統一社區中的其他依賴管理工具。
+
+## 初始化專案
+
+```go
+go mod init
+```
+
+啟動mod模組
+
+```go
+go get 模組名
+```
+
+手動download模組
 
 
 
