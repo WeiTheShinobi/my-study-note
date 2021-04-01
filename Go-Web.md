@@ -2,7 +2,7 @@
 
 # Web 應用
 
-- 程式向發送命令請求的客戶端返回HTML，客戶端像用戶展示喧染後的HTML。
+- 程式向發送命令請求的客戶端返回HTML，客戶端像用戶展示渲染後的HTML。
 - 使用HTTP協議。
 
 # 設計
@@ -34,7 +34,7 @@ import (
 )
 
 func hello(w http.ResponseWriter,r *http.Request){
-	fmt.Println("hello")
+	fmt.Fprintln("hello")
 }
 
 func main() {
@@ -42,11 +42,18 @@ func main() {
 		Addr: "127.0.0.1:8080",
 	}
 	http.HandleFunc("/",hello)
+    
+    // 啟動伺服器
 	server.ListenAndServe()
 }
 ```
 
+處理器函式必須要傳入兩個參數`(w http.ResponseWriter,r *http.Request)`
 
+```go
+func sayHello(w http.ResponseWriter,r *http.Request) {
+   fmt.Fprintln(w,"<h1>hello</h1>")
+}
+```
 
-
-
+可以配合`HTML`的寫法。

@@ -745,6 +745,102 @@ list.stream().filter((i)->i>2).forEach(System.out::println);
 CompletableFuture
 ```
 
+# JMM
+
+`Volatile` 是JVM提供的**輕量級同步機制**
+
+1. 保證可見性
+2. 不保證原子性
+3. 禁止指令重排
+
+## 什麼是JMM
+
+Java 內存模型，不存在，是一種約定。
+
+1. 線程解鎖前，必須把共享變量**立刻**刷回主存。
+2. 線程加鎖前，必須讀取主存中的最新值到工作變量。
+3. 加鎖和解鎖是同一把鎖。
+
+它對於8種動作還有約定。
+
+## Volatile
+
+線程A和線程B從主存取得變量0，
+
+現在線程A和線程B內的工作變量都是0，
+
+現在線程B把0改成了1並且刷回了主存，
+
+但是線程A並不知道。
+
+### 保證可見性
+
+在變數加上`volatile`關鍵字即可。
+
+### 不保證原子性
+
+原子性：不可分割，同時失敗或同時成功。
+
+使用多線程同時操作同一個資源可能會出錯，
+
+使用`Synchornized`或`Lock`可以保證原子性，
+
+但`Volatile`不能。
+
+#### 不使用`Synchornized`或`Lock`保證原子性
+
+嘗試修改這段程式碼
+
+```java
+private volatile static int num = 0;
+
+public static add() {
+    num++; // 不是原子性操作 它其實是幾個操作併在一起
+}
+```
+
+使用JUC下的`atomic`包
+
+```java
+private volatile static AtomicInteger num = new AtomicInteger();
+
+public static add() {
+    // num++; // 不是原子性操作
+    num.getAndIncrement(); // AtomicInteger + 1 的方法， CAS
+}
+```
+
+進去原始碼可以發現這個包大量地使用了`native`方法，
+
+底層用了CAS來實現。
+
+這些類的底層直接和操作系統掛勾，在記憶體中修改值。`Unsafe`類
+
+### 禁止指令重排
+
+指令重排：**你寫的程式，並不是按你寫的去執行的。**
+
+計算機可能會把你的順序重排。
+
+這個重排與關聯性有關，所以結果才會是一樣的。
+
+但是在多線程可能會產生異常的結果，
+
+因為在各自的線程指令重排沒關聯問題，
+
+但是可能影響到了別的線程，
+
+導致同樣的程式出現不同的結果。
+
+Volatile可以避免指令重排：
+
+記憶體屏障。CPU指令。
+
+1. 保證特定操作的執行順序
+2. 可以保證某些變量的記憶體可見性
+
+`volatile`在單例模式大量使用。
+
 
 
 
@@ -752,4 +848,3 @@ CompletableFuture
 
 
 待更新
-
