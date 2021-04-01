@@ -21,7 +21,30 @@ mux.handleFunc("/", index)
 // 對於根目錄的請求，重定向給index處理器函數。
 ```
 
-`net/http`庫提供了一個多路複用器，
+`net/http`庫提供了一個多路複用器。
+
+## 快速開始
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func hello(w http.ResponseWriter,r *http.Request){
+	fmt.Println("hello")
+}
+
+func main() {
+	server := http.Server{
+		Addr: "127.0.0.1:8080",
+	}
+	http.HandleFunc("/",hello)
+	server.ListenAndServe()
+}
+```
 
 
 
