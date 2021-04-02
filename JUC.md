@@ -1,10 +1,10 @@
-# Multi-threading 多執行緒
+# java.util.concurrent
 
 > 筆記作者：葉高緯 Wei the Shinobi
 >
 > 參考資料：[【狂神说Java】JUC并发编程](https://www.bilibili.com/video/BV1B7411L7tE?p=1)
 
-# Java.util.concurrent
+# java.util.concurrent
 
 裡面有關於多執行緒的一些東西ddddddd
 
