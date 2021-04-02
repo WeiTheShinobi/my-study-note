@@ -194,7 +194,27 @@ sorted();  // 排序
 
 可能出錯。
 
-**併行不適合操作**`LinkedList`、`BlockingQueues`、`IO` **不易拆分**
+**併行不適合操作**`LinkedList`、`BlockingQueues`、`IO` **因為不易拆分**
 
 **適合拆分**`ArrayLists`、`HashMap`
+
+# 排序
+
+```java
+employees.sort(
+        Comparator.comparing(Employee::getGender)
+        .thenComparing(Employee::getAge)
+        .reversed()
+);
+```
+
+# reduce
+
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
+int result = numbers
+        .stream()
+        .reduce(0, (subtotal, element) -> subtotal + element);
+System.out.println(result);  //21
+```
 
