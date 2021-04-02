@@ -4,8 +4,6 @@
 >
 > 參考資料：[【狂神说Java】JUC并发编程](https://www.bilibili.com/video/BV1B7411L7tE?p=1)
 
-# java.util.concurrent
-
 裡面有關於多執行緒的一些東西
 
 簡單點像是`Thread`或是`Runable`，但相較`callable`略為慢一點。
@@ -134,9 +132,10 @@ while(漢堡狀態) {
 
 ### 與傳統對照
 
-- Synchroized -> Lock
-- wait -> await
-- notify -> signal
+| Synchroized | Lock   |
+| ----------- | ------ |
+| wait        | await  |
+| notify      | signal |
 
 ```java
 Lock lock = new ReentrantLock();
