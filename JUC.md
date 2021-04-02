@@ -6,7 +6,7 @@
 
 # java.util.concurrent
 
-裡面有關於多執行緒的一些東西ddddddd
+裡面有關於多執行緒的一些東西
 
 簡單點像是`Thread`或是`Runable`，但相較`callable`略為慢一點。
 
