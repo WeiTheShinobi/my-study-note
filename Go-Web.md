@@ -1,5 +1,7 @@
 # Go Web
 
+> 筆記作者：葉高緯 Wei the Shinobi
+
 # Web 應用
 
 - 程式向發送命令請求的客戶端返回HTML，客戶端像用戶展示渲染後的HTML。
@@ -48,7 +50,7 @@ func main() {
 }
 ```
 
-處理器函式必須要傳入兩個參數`(w http.ResponseWriter,r *http.Request)`
+處理器函式必須要實現`ServeHTTP(w http.ResponseWriter,r *http.Request)`
 
 ```go
 func sayHello(w http.ResponseWriter,r *http.Request) {
@@ -57,3 +59,60 @@ func sayHello(w http.ResponseWriter,r *http.Request) {
 ```
 
 可以配合`HTML`的寫法。
+
+# ResponseWriter
+
+處理器通過這個街口創建HTTP響應，創建時會用到`http.response`結構。
+
+`ServeHTTP`的兩個參數都是引用傳遞，雖然`ResponseWriter`看起來像一個值，但實際上是個帶有結構指標的介面。
+
+`ResponseWriter`的三個方法
+
+- `Write`
+- `WriteHeader`
+- `Header`
+
+## Write
+
+接受一個字節數組作為參數，並寫入HTTP響應的主體中。
+
+```go
+w.Write([]byte(str))
+```
+
+## WriteHeader
+
+接收一個HTTP狀態碼的整數，並作為返回狀態碼。
+
+## Header
+
+設定首部
+
+```go
+func headerExp(w http.ResponseWriter,r *http.Request){
+   w.Header().Set("Location","https://www.facebook.com/")
+   w.WriteHeader(302)
+}
+```
+
+這段程式碼示範了跳轉到`https://www.facebook.com/`。
+
+# cookie
+
+```go
+// 自定義cookie然後設定，科學，合理。
+c1 := http.Cookie {
+   Name: "cookie",
+   Value: "hello",
+   HttpOnly: true,
+}
+http.SetCookie(w,&c1)
+```
+
+```go
+cookie, _ := r.Cookie("cookie")
+cookies := r.Cookies()
+
+// 取取得cookie
+```
+
