@@ -166,7 +166,7 @@ t.ExcuteTemplate(w,"index.tmpl","hello")
 
 它會保護我們
 
-# 開始使用金酒
+# 開始使用琴酒
 
 ```go
 package main
@@ -202,7 +202,7 @@ engine.LoadHTMLGlob("templates/**/*")  // 一次解析全部 真爽
 // 關於通配符要注意你的文件放在哪
 ```
 
-## 自定義方法
+## 模板自定義方法
 
 ```go
 // gin框架給模板添加自定義函數
@@ -247,5 +247,56 @@ engine.Static("/xxx","./static")
 
 ```html
 <link rel="stylesheet" href="/xxx/style.css">
+```
+
+## JSON
+
+```go
+engine.GET("/", func(context *gin.Context) {
+   //data := map[string]interface{}{
+   // "name": "monkey",
+   // "count": 2,
+   //}
+   data := gin.H{
+      "name": "monkey",
+      "count": 2,
+   }
+   context.JSON(http.StatusOK,data)
+})
+```
+
+也可以傳送結構體
+
+## 獲取querystring參數
+
+```go
+// 無默認值
+data := context.Query("query")
+// 有默認值
+data := context.DefaultQuery("query","monkey")
+context.JSON(http.StatusOK,data)
+```
+
+獲取路徑參數
+
+```go
+engine.GET("/:name", func(context *gin.Context) {
+    name := engine.Param("name")
+    context.JSON(http.StatusOK,gin.H{
+        "name": name,
+    })
+})
+```
+
+## bind
+
+```GO
+type UserInfo struct {
+	Username string `form:"name"`
+	Password string `form:"password"`
+}
+
+var u UserInfo
+context.ShouldBind(&u)
 ```
 
