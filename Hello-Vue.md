@@ -112,3 +112,10 @@ Vue.component("monkey",{
 });
 ```
 
+# axios
+
+```javascript
+axios.get(地址?查詢字符).then(function(response){},function(err){})
+axios.post(地址,物件).then(function(response){},function(err){})
+```
+

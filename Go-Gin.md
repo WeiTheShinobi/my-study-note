@@ -300,3 +300,12 @@ var u UserInfo
 context.ShouldBind(&u)
 ```
 
+# GORM
+
+Go的ORM
+
+- 優點：提開開發效率
+- 缺點：犧牲效能與靈活性
+
+[GORM 指南 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.](https://gorm.io/zh_CN/docs/)
+
