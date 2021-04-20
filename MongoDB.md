@@ -27,3 +27,18 @@ mongo --host=127.0.0.1
 集合可以顯式或隱式創建
 
 可以使用`try/catch`
+
+MongoDB的命令都是
+
+```shell
+db.comment.命令
+```
+
+舉例：
+
+更新
+
+```shell
+db.comment.update(query,update,options)
+```
+
