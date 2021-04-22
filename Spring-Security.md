@@ -45,3 +45,25 @@ Spring Security本質上就是一個過濾器鍊
 
 # web權限方案
 
+## 設置登入
+
+- 通過配置文件
+
+在配置文件中輸入即可
+
+`spring.security.user.name=user`
+
+`spring.security.user.password=123456`
+
+- 通過配置類
+
+配置類繼承`WebSecurityConfigurerAdapter`
+
+複寫`configure()`
+
+通過方法傳入的物件進行設置
+
+也可以在此進行加密
+
+- 自定義編寫實現類
+

@@ -545,3 +545,64 @@ abstract class AbstractClass {
 
 # 狀態模式
 
+允許物件隨著內在的狀態改變而改變行為。
+
+```java
+final static int state1 = 0;
+final static int state2 = 1;
+final static int state3 = 2;
+int state = state1;
+
+if (state == state1) {
+    // ...
+} else if {
+    // ...
+}
+```
+
+簡單的狀態，
+
+配合不同的方法，
+
+在不同狀態有不同做法。
+
+```java
+private void test(){
+    if (state == state1) {
+    // ...
+    } else if {
+        // ...
+    }
+}
+
+private void test2(){
+    if (state == state1) {
+    // ...
+    } else if {
+        // ...
+    }
+}
+```
+
+但如果真的這樣寫，
+
+未來的自己一定會很想殺了你。
+
+因為程式碼難以維護、修改。
+
+我們應該使用介面合成，
+
+一個`State`介面，
+
+然後實作不同的狀態，
+
+類似於策略模式，
+
+使用這個作法，
+
+日後想新增狀態更容易，
+
+不用修改已經完成的程式碼。
+
+# 代理人模式
+

@@ -151,3 +151,37 @@ public class Comment implements Serializable {
 
 創建dao層繼承`MongoRepository<pojo, id>`
 
+## 更新檔案
+
+Service層中的`mongoTemplate`
+
+```java
+private MongoTemplate mongoTemplate;
+
+void test(String id) {
+    // 查詢條件
+    Query query = Query.query(Criteria.where("_id").is(id));
+    // 更新條件
+    Update update = new Update();
+    // 讚數提升1
+    update.inc("likenum");
+    
+    mongoTemplate.updateFirst(query,update,Comment.class)
+}
+```
+
+# Mongo集群和安全
+
+## Replica Sets 副本集
+
+副本集是一組維護相同數據集的mongo服務。
+
+副本集有兩種類型三種角色
+
+- 主節點
+- 副節點
+
+- 主要成員
+- 副本成員
+- 仲裁者：不保留數據，只投票
+
