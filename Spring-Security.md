@@ -65,5 +65,36 @@ Spring Security本質上就是一個過濾器鍊
 
 也可以在此進行加密
 
-- 自定義編寫實現類
+- 自定義編寫實現類〈推薦〉
+
+使用這個方法才能配合資料庫
+
+
+1. 創建配置類，設置使用哪個`userDetailService`實現類
+2. 編寫實現類，返回User物件，User物件有使用者密碼和權限
+
+```java
+@Configuration
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+    }
+}
+```
+
+```java
+@Service("userDetailsService")
+public class MyUserDetailService implements UserDetailsService {
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        List<GrantedAuthority> auth = AuthorityUtils.commaSeparatedStringToAuthorityList("role");
+        return new User("admin",new BCryptPasswordEncoder().encode("123456"),auth);
+    }
+}
+```
 

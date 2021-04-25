@@ -71,3 +71,5 @@ Spring提供IOC容器實現兩種方式（兩個介面）：
 - `FileSystemXmlApplicationContext`
 - `ClassPathXmlApplicationContext`
 
+## IOC操作Bean管理
+
