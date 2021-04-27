@@ -73,3 +73,48 @@ Spring提供IOC容器實現兩種方式（兩個介面）：
 
 ## IOC操作Bean管理
 
+- 什麼是Bean管理？
+
+指的是兩個步驟：
+
+- 創建物件
+- 注入屬性
+
+Bean管理有兩種操作方式：
+
+- xml配置文件
+- 註解
+
+### xml創建
+
+在spring配置文件中，使用bean標籤創建物件。
+
+常用屬性：
+
+- id 唯一標示
+- class 類別全路徑
+
+創建物件時，默認無參數建構式。
+
+因為反射創建`newInstance()`沒有參數。
+
+### xml注入
+
+- DI：依賴注入，就是注入屬性
+
+set方法注入：
+
+```xml
+<bean id="..." class="...">
+    <property name="..." value="..."></property>
+</bean>
+```
+
+建構式注入：
+
+```xml
+<bean id="..." class="...">
+    <constructor-arg name="..." value="..."></constructor-arg>
+</bean>
+```
+
