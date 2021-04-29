@@ -1,6 +1,8 @@
 # Spring
 
 > 筆記作者：葉高緯 Wei the Shinobi
+>
+> 非常基礎
 
 輕量級的JavaEE開源框架
 
@@ -100,7 +102,7 @@ Bean管理有兩種操作方式：
 
 ### xml注入
 
-- DI：依賴注入，就是注入屬性
+- Dependency Injection：依賴注入，就是注入屬性
 
 set方法注入：
 
@@ -118,3 +120,46 @@ set方法注入：
 </bean>
 ```
 
+外部 bean 注入：
+
+```xml
+<bean id="userService" class="...">
+    <property name="userDao" value="userDaoImpl"></property>
+</bean>
+```
+
+### 工廠 Bean
+
+一般的配置取得普通的Bean
+
+創建類實現FactoryBean<>介面
+
+可以讓定義類型與返回類型不一樣
+
+### Bean 作用域
+
+Bean創建默認是單例
+
+使用`scope`標籤設置
+
+單例在加載文件時創建物件
+
+多實例在調用方法時創建物件
+
+### Bean 生命週期
+
+1. 通過建構器創建Bean
+2. 為Bean的屬性設值和其他Bean引用(set方法)
+3. 調用Bean初始化的方式
+4. 可以用了
+5. 容器關閉時，銷毀
+
+# AOP
+
+AOP使用動態代理
+
+有介面，使用JDK
+
+不然用CGLIB
+
+@aspect

@@ -92,9 +92,9 @@ override這些函式應該遵守通用契約，
 
 否則日後會很困擾。
 
-### 條款 7：複寫`equals()`時請遵守通用契約(general contract)
+### 條款 7：覆寫`equals()`時請遵守通用契約(general contract)
 
-避免出錯的最簡單方法就是不複寫`equals()`
+避免出錯的最簡單方法就是不覆寫`equals()`
 
 遵守以下通用契約：
 
@@ -121,17 +121,103 @@ if (!(obj instanceof MyType))
     return false;
 ```
 
-
-
 以`==`檢查引數是否為物件自身的reference
 
 以`instanceof`檢查引數是否為正確型別
 
 完成撰寫時記得問自己：它有對稱性、反身性、遞移性嗎？
 
-### 條款 8：複寫`equals()`時請總是一併複寫`hashCode()`
+### 條款 8：覆寫`equals()`時請總是一併覆寫`hashCode()`
 
 如果你忘記這麼做，會違反hashCode的通用契約，
 
 在和"hash-based collections"(HashMap, HashSet, Hashtable)協作時會妨礙正確的表現。
+
+**兩個相等的物件必須具有相等的hash碼**
+
+如果你沒覆寫`hashCode()`，就會失敗。
+
+- 不好的寫法
+
+```java
+public int hashCode() {
+    return 42;
+}
+```
+
+這是合法的，但很爛，
+
+會讓hash table變成linked lists
+
+O(n)變成O(n^2)
+
+要點：
+
+1. 將一個非0常數儲存於int result變數中
+2. 對物件中的每一個被`equals()`所考慮的欄位`f`進行以下處理：
+   1. 對這個欄位計算出型別為`int`的hash碼`c`：
+      1. 如果是`boolean`，計算`(f ? 0 : 1)`
+      2. 如果是`byte`,`char`,`short`或`int`，計算`(int)f`。
+      3. 如果是`long`，計算`(int)(f ^ ( f >>> 32))`。
+      4. 如果是`float`，計算`Float.floatToIntBits(f)`。
+      5. 如果是`double`，計算`Double.doubleToLongBits(f)`，然後再按照`long`的處理方式處理。
+      6. 如果是object reference，而且class的`equals()`透過遞迴比較，那也遞迴呼叫`hashCode()`。如果要更複雜，使用正則表達式。如果是`null`回傳0。
+      7. 如果是`array`，按照個別方法計算後將數值組合。
+   2. 將剛剛算出來的hash碼`c`按公式組合到`result`中：`result = 37*result + c;`
+3. 傳回`result`
+4. 檢查一下
+
+選擇乘以37這個奇質數，和第一步選擇非0常數都是為了減少碰撞可能。
+
+如果你的class不可變，而且計算代價很大，你可以考慮將 hash 碼緩存於物件之中待用
+
+如果你認為某型別的大多數物件將被作為 hash 鍵，那你應當在創建實體時就計算 hash 碼。
+
+### 條款 9：總是覆寫`toString()`
+
+class名稱 + @ + 不帶正負號的十六進制 hash 碼
+
+這種東西好讀嗎？
+
+`println()`、`+`、`assert()`時`toString()`會被自動喚起。
+
+### 條款 10：審慎地覆寫`clone()`
+
+> 建議參考`java.util.collection`的原始碼，例如HashMap或ArrayList的clone作法
+
+`clone()`會回傳一個欄位逐一拷貝的副本物件
+
+如果你要 clone 一個 array
+
+而你只是`return super.clone()`
+
+那array元素的記憶體參考還是指向原本的物件。
+
+### 條款 11：考慮實現Comparable
+
+`compareTo()`並非在object中，
+
+而是在`java.lang.Comparable`
+
+如果你正在撰寫一個具有明顯內在次序的 value class
+
+**強烈建議**你實現這個 interface
+
+極小的努力就可以獲得巨大的能量
+
+撰寫`compareTo()`和撰寫`equal()`差不多，
+
+但有幾個差異，
+
+不需要在型別轉換前檢查型別，
+
+不一樣就拋出異常，
+
+如果是 null 也拋出異常。
+
+## 類別與介面
+
+本章的許多守則將使你的 classes 和 interface 更有用、強固、靈活。
+
+### 條款 12：將classes和其成員的可存取性最小化
 
