@@ -5,6 +5,8 @@
 > 筆記作者：葉高緯
 >
 > 還好這本書專有名詞是用英文，不然不同的中文翻譯會看得很痛苦。
+>
+> 這本書提出一些不變的通則。
 
 ## 創建與銷毀物件
 
@@ -220,4 +222,95 @@ class名稱 + @ + 不帶正負號的十六進制 hash 碼
 本章的許多守則將使你的 classes 和 interface 更有用、強固、靈活。
 
 ### 條款 12：將classes和其成員的可存取性最小化
+
+模組的好壞，在於模組隱藏其內部資料與實作的程度，
+
+模組和模組之間只透過 APIs 進行通訊，隱藏細節。
+
+稱為 information hiding 或 encapsulation
+
+Java 語言有許多設施可以實現隱藏，
+
+其中之一便是**存取控制(access control)**。
+
+盡可能使成員不被外界存取，
+
+根據用途盡量使用最低的存取級別
+
+頂層的 classes 和 interface 只可能使用 package-private(default)、public
+
+讓 public class 變成 package-private ，
+
+讓以後修改更方便，
+
+因為是包內實作而不是API。
+
+public class 不該擁有 public 欄位，
+
+除非是 public static final 表示常量。
+
+**注意：長度不為0的 array 總是可變的，這會導致安全漏洞。**
+
+```java
+// 不安全
+public static final Type[] VALUES = {...};
+```
+
+```java
+// 正確示範
+private static final Type[] PRIVATE_VALUES = {...};
+// 方法1
+public static final List VALUES = Collections.unmodifiableList(Arrays.asList(PRIVATE_VALUES));
+// 方法2
+public static final Type[] values() {
+    return (Type[]) PRIVATE_VALUES.clone();
+}
+```
+
+### 條款 13：偏愛不變性(immutability)
+
+immutable class 就是實體不能被修改的 class
+
+資訊皆在創建之初提供
+
+例如 String、包裝類、BigInteger、BigDecimal
+
+不可變物件不易犯錯且更安全
+
+- 不提供修改物件內容的方法
+- 不可被覆寫，可以將 class 加上 final 修飾
+- final 所有欄位
+- private 所有欄位
+- 確保可變物件不會被取得參考，避免被修改，在建構式、存取式和`readObject()`中使用保護性拷貝〈回傳物件副本〉。
+
+immutable object 是執行緒安全的
+
+String 是個不可變物件
+
+```java
+String test = "";
+for (int i = 0; i > 100; i++) {
+    test += "test";
+}
+```
+
+上面這段程式碼，
+
+因為 String 是個不可變物件，
+
+重複一百次就要創建一百個實體，
+
+非常沒效率，
+
+所以 String 製作了 StringBuffer
+
+要實現不可變物件可能也要解決這個問題。
+
+不可變物件序列化要明確提供一個`readObject()`
+
+你應該盡量讓你的數值物件不可變，不需要為每個 getter 都提供一個 setter
+
+### 條款 14：優先考慮複合(composition)，然後才是繼承(ingeritance)
+
+**本條款討論的問題不適用於介面繼承**
 
