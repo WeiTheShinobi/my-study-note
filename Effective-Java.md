@@ -314,3 +314,64 @@ for (int i = 0; i > 100; i++) {
 
 **本條款討論的問題不適用於介面繼承**
 
+不當的使用繼承會導致脆弱的軟體
+
+- 在 package 之內使用繼承是安全的
+- 繼承專門設計來被繼承且有文件的 class 也是安全的
+- 跨越 package 邊界，對具象 class 繼承是危險的
+
+一個簡單的方法可以避免複雜的問題：裝飾者模式
+
+不是繼承，而是在新的 class 中包含一個現有 class 的欄位
+
+以複合替代繼承
+
+只有在「B 是一種 A」的情況下才使用繼承
+
+### 條款 15：除非專為繼承而設計並提供文件，否則不要使用繼承
+
+因為繼承違反了封裝性，
+
+所以文件必須描述它是如何做、與其它方法的關係
+
+這與給一般的終端使用者文檔不懂，這是 self-use 形式的文檔
+
+你可以撰寫 protected 的方法提供給 subclass
+
+class 還必須遵守一些限制規定才能被繼承：
+
+- 建構式不能呼叫可被覆寫的函式
+- 實作 Cloneable 和 Serializable 介面，`clone()`和`readObject()`不能呼叫可被覆寫的函式
+- `readResolve()`和`writeReplace()`是 protected 而不是 private
+
+### 條款 16：盡量以介面取代抽象類別
+
+繼承有很多不方便的地方，
+
+而且破壞了封裝性。
+
+我們可以使用**骨幹實作類別(AbstractInterface)**來取代抽象類別的實作程式碼，
+
+撰寫骨幹實作類別十分簡單，一個 abstract class 實作介面，分析那些函式是基本元素，讓他們成為抽象函式，實作其他的具象方法。
+
+骨幹實作類別的優勢在於演進比介面更容易，
+
+當我們認為演進的容易性比程式的彈性和功能更為重要時，就使用 abstract class。
+
+### 條款 17：interfaces 只應當被用來定義型別(types)
+
+當 class 實現某個 interface，該 interface 就成了一個型別。
+
+interface 不應該被用來匯出常數。
+
+### 條款 18：優先考慮 static member classes，然後才是 nonstatic
+
+nested class 是一種定義於其他 class 內部的 class，它應該僅為其 enclosing class 而存在。
+
+nested class 有四種：
+
+1. static member classes
+2. nonstatic member classes
+3. anonymous classes
+4. local classes
+
