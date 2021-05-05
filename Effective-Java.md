@@ -366,7 +366,7 @@ interface 不應該被用來匯出常數。
 
 ### 條款 18：優先考慮 static member classes，然後才是 nonstatic
 
-nested class 是一種定義於其他 class 內部的 class，它應該僅為其 enclosing class 而存在。
+nested class 是一種定義於其他 class 內部的 class，它應該僅為其 enclosing class (外圍類別)而存在。
 
 nested class 有四種：
 
@@ -374,4 +374,52 @@ nested class 有四種：
 2. nonstatic member classes
 3. anonymous classes
 4. local classes
+
+static member class 常見的用法是作為補助用的 public class，只在與其外圍 class 結合時才有用，
+
+舉例來說 Calulator.Operation.PLUS
+
+如果 member class 實體需要一個 reference 指向其外圍實體，讓它成為 nonstatic，反之。
+
+## C 建構的替代品
+
+### 條款 19：以 classes 替代 structures
+
+### 條款 20：以 class 繼承體系取代 unions
+
+### 條款 21：以 classes 替代 enums
+
+可以使用 typesafe enum
+
+### 條款 22：以 classes 和 interfaces 替代函式指標(fubction pointers)
+
+## 函式
+
+### 條款 23：檢查參數的有效性(validity)
+
+**執行函式的運算之前應該先檢查參數**，
+
+避免 null 或其他自訂的限制，不檢查日後除錯也麻煩
+
+可以使用 Javadoc 的`@throws`說明異常和限制
+
+除非檢驗成本過高或計算過程中會暗自進行有效性檢驗
+
+### 條款 24：必要時製作出「保護性拷貝」(defensive copies)
+
+Java 用起來這麼於愉悅的一個原因是，它是一個安全的語言。
+
+只要不使用 native methods，就不會出事。
+
+在 immutable class 中，傳入物件欄位時使用保護性拷貝(new 新物件)，
+
+避免物件能被修改。
+
+**注意：傳入時不能使用`clone()`進行保護性拷貝，因為可能被傳入的是該物件的 subclass 而被攻擊。**
+
+傳出時則可以`clone()`，因為我們能確定該物件是我們的。
+
+你應該想想物件是否是可變的，例如長度不為0的 array。
+
+### 條款 25：謹慎設計函式的署名〈簽名，signatures〉
 
