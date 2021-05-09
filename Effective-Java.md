@@ -579,7 +579,7 @@ Vector obj = new Vector();
 - 執行動作使用動詞
 - 回傳 boolean 以 is 開頭
 - 回傳某物件的屬性，用名詞或 get 開頭
-- 承上，如果是 Bean，一定用 get 開頭
+- 承上，如果是 JavaBean，一定用 get 開頭
 - 轉換型別，命名為 toType
 - 工廠常用的名字 valueOf 和 getInstance
 
@@ -595,9 +595,90 @@ Vector obj = new Vector();
 
 ### 條款 40：對可複狀態(recoverable conditions)使用可控式異常(checked exceptions)，對編程錯誤使用執行期異常(runtime exceptions)
 
-Java 提悾三種 throwables：
+Java 提供三種 throwables：
 
 - checked 可控式異常
 - runtime 執行期異常
 - errors 錯誤
+
+runtime 和 errors 都沒有必要且不該被捕獲
+
+errors 很嚴重，你也不該實現他的子類
+
+checked 用於狀態可被復原
+
+### 條款 41：不要濫用可控式異常(checked exceptions)
+
+### 條款 42：盡量使用標準異常(standard exceptions)
+
+複用異常更容易被閱讀和使用
+
+- IllegalArgumentException
+- IllegalStateException
+
+使用哪種異常並不是嚴格規定
+
+### 條款 43：拋出與其抽象層(abstraction)相應的異常
+
+透過**異常轉換**
+
+將低階異常轉變成高階抽象層的異常
+
+```java
+catch (LowerLevelException e) {
+    throw new HighLevelException(...);
+}
+```
+
+### 條款 44：對每一個函式所拋出的每一個異常詳加說明
+
+### 條款 45：以詳細的訊息紀錄「失敗情況下捕獲的異常」
+
+必須要寫好說明，出現異常時才知道如何修改
+
+### 條款 46：努力保持 failure atomicity
+
+### 條款 47：不要輕忽異常
+
+不要把整段程式碼都用捕獲異常包起來
+
+至少也要寫下說明
+
+## 執行緒
+
+### 條款 48：同步存取(synchronize access)共享之可變資料(shared mutable data)
+
+Java 語言保證對單一變數的讀寫操作是原子性的(不可切割)
+
+但也不就這樣不使用 synchronize，
+
+因為有原子性不代表有可見性(可以被所有 thread 同時看見)
+
+### 條款 49：避免過度使用同步機制(synchronization)
+
+為了避免死結，
+
+不要再同步區域呼叫 alien method
+
+或者說
+
+盡可能限制同步區的工作量
+
+### 條款 50：絕對不要在迴圈之外喚起`wait()`
+
+### 條款 51：不要依賴執行緒排程器
+
+### 條款 52：以文件說明你的多緒安全性
+
+### 條款 53：避免使用執行緒尋組
+
+## 序列化
+
+### 條款 54：審慎實現 Serializable
+
+### 條款 55：考慮使用自訂的序列化格式
+
+### 條款 56：保護性地寫一個`readObject()`
+
+### 條款 57：必要時提供一個`readResolve()`
 
