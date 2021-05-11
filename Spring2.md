@@ -118,5 +118,17 @@ AOP 中的重要概念：責任鏈模式
 
 chain 物件通過責任鍊模式調用
 
-chain -> a -> chain -> b -> chain -> c -> ....
+chain -> around -> chain -> before -> chain -> after -> ....
+
+不斷地傳遞 chain 物件 透過 CglibMethodInvocation
+
+從 chain 物件取得下一個要執行的通知
+
+順序：
+
+1. around
+2. before
+3. after
+4. afterReturning
+5. afterThrowing
 
