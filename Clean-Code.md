@@ -179,3 +179,4 @@ String test = obj.getA().getB().getC().getD().getE();
 - 標準命名法
 
 最重要的是去嘗試。
+
