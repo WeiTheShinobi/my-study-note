@@ -1,4 +1,4 @@
-# Database System
+# Database Management System
 
 > 筆記：葉高緯 Wei the Shinobi
 >
