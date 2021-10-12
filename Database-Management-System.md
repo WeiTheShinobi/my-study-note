@@ -320,3 +320,63 @@ flush 後會有 log，讓你可以 rollback
 2. End statement
 3. Commit or rollbacl
 
+.
+
+.
+
+.
+
+
+
+## Indexing
+
+為什麼需要 index ?
+
+沒有 index 需要把整個 table 掃一次，很慢
+
+**index**：定義特定 fields 的資料結構，用來提升速度
+
+index 是 file base 的，與 in memory 的資料結構不同
+
+所以要考慮到 block 與 IO
+
+**search key** 有兩種 primary Index 和 secondary index
+
+**primary Index**：index 定義的那些 fields，剛好就是 fields 的 table 的 primary key
+
+當你把 field 設成 primary key，database 會自動把 primary key 建立 index
+
+**index 讓讀取加速，寫入變慢。**
+
+### Hash-Based Indexes
+
+設計來特定搜尋(equality)而不是範圍搜尋
+
+透過 hash 到某個 bucket 中
+
+又可以分成 static hash 和 dynamic hash
+
+static hash：bucket 的數量不會隨資料量改變
+
+search cost： B/N
+
+如何擴充？
+
+直接雙倍 bucket 的數量是不實際的
+
+因為要重新取拿 rehash，很多IO
+
+可以讓他邏輯上擴充
+
+記下 pointer，pointer 指向 bucket
+
+### B-Tree Indexes
+
+因為 hash-based indexes 無法支援 range searches
+
+樹有排序，有排序可以使用二分搜尋法
+
+那為什麼要用 tree 而不是 list 就好？
+
+為了加快寫入速度，不然速度是 O(n)
+
