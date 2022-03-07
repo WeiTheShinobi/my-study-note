@@ -43,10 +43,7 @@ span 伸展
 - 原點不動
 -  line 依然平行、均勻分布
 
-> [a, b]		 [x]	     [ax + by]
-> [c, d]	*	[y]   =    [cx + dy]
->
-> // a, b = i-hat .  c, d = j-hat
+> [[a, b], [c, d]] * [x, y] = [[ax + by], [cx + dy]]
 
 
 要了解線性代數就要知道：
