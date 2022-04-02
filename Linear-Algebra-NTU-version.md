@@ -76,7 +76,7 @@ Av = a1v1 + a2v2 + ... anvn
 
 Av = [a1, a2 ... an] * [v1, v2 ... vn]T
 
-![001](C:\Information\IntellijProjects\my-study-note\image\Linear-Algebra-NTU-version\001.png)
+![001](\image\Linear-Algebra-NTU-version\001.png)
 
 - identity matrix
 
@@ -84,7 +84,7 @@ Av = [a1, a2 ... an] * [v1, v2 ... vn]T
 
 表示為 In
 
-![002](C:\Information\IntellijProjects\my-study-note\image\Linear-Algebra-NTU-version\002.png)
+![002](\image\Linear-Algebra-NTU-version\002.png)
 
 所有矩陣乘以 In 不會改變
 
@@ -101,7 +101,7 @@ Av = [a1, a2 ... an] * [v1, v2 ... vn]T
 一個方程式稱為 linear equation
 
 聯立方程式稱為 system of linear equation
-![003](C:\Information\IntellijProjects\my-study-note\image\Linear-Algebra-NTU-version\003.png)
+![003](\image\Linear-Algebra-NTU-version\003.png)
 
 - 每個聯立方程式只有**無解**、**一組解**或**無限多組解**
 
@@ -123,4 +123,4 @@ Av = [a1, a2 ... an] * [v1, v2 ... vn]T
 
 將聯立方程式整個放進矩陣中
 
-![004](C:\Information\IntellijProjects\my-study-note\image\Linear-Algebra-NTU-version\004.png)
+![004](\image\Linear-Algebra-NTU-version\004.png)
