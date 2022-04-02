@@ -54,3 +54,13 @@ span 伸展
 
 ### Chapter 4
 
+Composition 合成 組合 function
+
+`f(g(x))`計算 function ，由右邊向左
+
+矩陣乘法代表什麼？施加一個後再施加一個
+
+沒有交換律
+
+### Chapter 5
+
