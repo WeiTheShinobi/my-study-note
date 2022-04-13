@@ -1,10 +1,10 @@
-## 離散數學
+# 離散數學
 
 > [10920趙啟超教授離散數學_第1A講 Logic and Set Theory - YouTube](https://www.youtube.com/watch?v=A_NNGOqui7s&list=PLS0SUwlYe8cyaHfrgAVaaKVNkwLYNsTA2&index=1&ab_channel=NTHUOCW)
 
-### Logic and Set Theory
+## Logic and Set Theory
 
-#### Logic
+### Logic
 
 p 表示狀態
 
@@ -37,7 +37,7 @@ $$
 
 結論不成立，前提就不成立
 
-#### Set Theory
+## Set Theory
 
 an unordered collection of objects
 
@@ -56,7 +56,7 @@ A =
 $$
 
 
-##### Set Opertaion
+### Set Opertaion
 
 $$
 A \cup B \quad \text {A or B 聯集} \\
@@ -68,3 +68,25 @@ $$
 A - B
 
 在A不在B
+
+### Set Relation
+
+- subset：小於等於 S 集合
+
+舉例：**A 是 B 的子集**表示為 A⊆B
+
+- proper subset：小於 S 集合
+- power set：S 集合的所有子集 
+- disjoint：兩集合之交集為空集合
+
+### 迪摩根定律
+
+- 反(A且B) = 反A 或 反B
+- 反(A或B) = 反A 且 反B
+
+快速記憶：消除括號 反或 要相反
+
+自行畫圖或推論也可推得此定律
+
+## Mathematical Induction and Functions
+

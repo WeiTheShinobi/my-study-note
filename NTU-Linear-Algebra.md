@@ -76,7 +76,7 @@ Av = a1v1 + a2v2 + ... anvn
 
 Av = [a1, a2 ... an] * [v1, v2 ... vn]T
 
-<img src="./image/Linear-Algebra-NTU-version/001.png">
+<img src="./image/NTU-Linear-Algebra/001.png">
 
 - identity matrix
 
@@ -84,7 +84,7 @@ Av = [a1, a2 ... an] * [v1, v2 ... vn]T
 
 表示為 In
 
-<img src="./image/Linear-Algebra-NTU-version/002.png">
+<img src="./image/NTU-Linear-Algebra/002.png">
 
 所有矩陣乘以 In 不會改變
 
@@ -101,7 +101,7 @@ Av = [a1, a2 ... an] * [v1, v2 ... vn]T
 一個方程式稱為 linear equation
 
 聯立方程式稱為 system of linear equation
-<img src="./image/Linear-Algebra-NTU-version/003.png">
+<img src="./image/NTU-Linear-Algebra/003.png">
 
 - 每個聯立方程式只有**無解**、**一組解**或**無限多組解**
 
@@ -123,4 +123,74 @@ Av = [a1, a2 ... an] * [v1, v2 ... vn]T
 
 將聯立方程式整個放進矩陣中
 
-<img src="./image/Linear-Algebra-NTU-version/004.png">
+<img src="./image/NTU-Linear-Algebra/004.png">
+
+#### Row Echelon Form and Reduced Row Echelon Form
+
+> 看起來像階梯的矩陣
+
+- row echelon form
+
+需要符合三個條件：
+
+1. zero row 必須低於所有的 nonzero row
+2. leading entry (第一個非零值) 必須位於先前 row 的 leading entry 的右邊
+3. leading entry 的下方 column 都是 0
+
+- reduce row echelon form
+
+需符合 row echelon form 的條件且：
+
+4. 除了 leading entry，該 row 的其他數值皆為 0
+5. leading entry 的值只能是 1
+
+<img src="./image/NTU-Linear-Algebra/005.png">
+
+這種矩陣讓我們對方程式求解更加容易
+
+<img src="./image/NTU-Linear-Algebra/006.png">
+
+free variable 可以是任意實數
+
+- 所有矩陣都能變成 row echelon form 嗎？
+
+是
+
+- 所有矩陣都能變成 reduce row echelon form 嗎？
+
+是
+
+- 所有矩陣都能變成**唯一** row echelon form 嗎？
+
+否，可以有很多個
+
+- 所有矩陣都能變成**唯一** reduce row echelon form 嗎？
+
+是
+
+> **定理：所有矩陣都可以被轉換為一個且唯一一個 reduce row echelon form**
+
+### Gaussian Elimination
+
+高斯消去法
+
+<img src="./image/NTU-Linear-Algebra/007.png">
+
+<img src="./image/NTU-Linear-Algebra/008.png">
+
+做完前四步驟即可得到 row echelon form
+
+<img src="./image/NTU-Linear-Algebra/009.png">
+
+<img src="./image/NTU-Linear-Algebra/010.png">
+
+####  Rank and Nullity
+
+- rank：矩陣的 reduce row echelon form 中的 number of nonzero rows
+- nullity：總 row 數 - rank
+
+rank 代表的意義是矩陣中的 basic variables 數量
+
+nullity 代表矩陣中 free variables 數量
+
+###  Span of a Set of Vectors
