@@ -90,3 +90,74 @@ A - B
 
 ## Mathematical Induction and Functions
 
+### 數學歸納法
+
+數學歸納法需要滿足兩個條件：
+
+- f(1) is true
+- if f(k) is ture, then f(k + 1) is true , for every k in N
+
+請不要執著於這個形式，
+
+條件可以有很多，
+
+要確保整個證明是對的，
+
+n 可以推到 n +1，n + 1 可以推到 n + 2 ...
+
+### 函數
+
+`f: A -> B`
+
+定義：集合 A 對應到集合 B
+
+`A:domain of f`
+
+`B: codomain of f`
+
+`f(A) = {f(a) | a in A}`
+
+- one-to-one (injective)
+
+一對一函數，一個輸入對應一個輸出
+
+這也代表`if f(a1) = f(a2), then a1 = a2`
+
+- onto (surjective)
+
+`if f(A) = B, for all b in B there is at least one a in A with f(a) = b`
+
+白話的說就是集合 B 中每個元素都會被至少一個 a 對應到
+
+- bijective
+
+同時是 one-to-one 且 onto
+
+- 合成函數
+
+`(g o f)(a) = g(f(a))`
+
+不滿足交換律
+
+滿足結合律
+
+- 反函數 inverse
+
+反函數是唯一的。
+
+如果一個函數有反函數，若且為若，函數是 bijective
+
+one-to-one 是因為如果多個映射，反函數推回來會有多個，不合理
+
+onto 是因為有反就有正，如果有東西沒被映射到，不合理
+
+## Pigeonhole Principle
+
+一個鴿子住一個洞
+
+如果鴿子比洞多，那一定有多個鴿子要擠進一個洞
+
+這也可以套用在函數、集合問題中
+
+**舉例**：找出問題的目標，問題的集合大小，如果目標比集合還要大，就可以知道問題能否成立
+

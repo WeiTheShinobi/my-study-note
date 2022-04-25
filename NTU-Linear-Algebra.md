@@ -194,3 +194,24 @@ rank 代表的意義是矩陣中的 basic variables 數量
 nullity 代表矩陣中 free variables 數量
 
 ###  Span of a Set of Vectors
+
+span 表示一個向量集合
+
+### Linear Dependence and Linear Independence 
+
+> 線性相依與線性獨立
+
+- Linear Dependence：存在一組向量 c1...ck 可以讓 c1u1... ckuk = 0  ( c1...ck 不全為0 )
+
+白話的說，某些向量 u 是其他向量的線性組合
+
+- Linear Independence
+
+每個向量都是獨立的
+
+- homogenous
+
+Ax = b, b = 0
+
+### Matrix Multiplication
+

@@ -60,5 +60,17 @@ CPU 執行重要的任務
 
 P2P 或 client-server
 
-## Introduction
+## What is an Operating System?
 
+OS 是應用程式與硬體之間的一層
+
+他提供 API 給應用程式使用
+
+OS 需要：
+
+- 資源管理
+- 控制
+- kernel：OS 的別名，就是 OS 的意思
+- 不允許 BUG
+
+CPU/memory <- buffer <- I/O
