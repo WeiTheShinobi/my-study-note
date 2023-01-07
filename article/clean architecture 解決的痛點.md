@@ -4,7 +4,7 @@ WeiTheShinobi
 
 Clean Architecture 是我讀的一本書，這本書講了架構、SOLID、作者的自傳等等，我來分享一些我得到的新東西，也許這比較像是讀書心得或是我對自己的碎碎念．
 
-<img src="./image/clean-architecture-解決的痛點01.png">
+<img src="./image/clean-architecture-解決的痛點03.png">
 
 ## 被資料庫綁架
 
@@ -20,7 +20,7 @@ Clean Architecture 是我讀的一本書，這本書講了架構、SOLID、作�
 
 ## 所謂依賴
 
-<img src="./image/clean-architecture-解決的痛點03.png">
+<img src="./image/clean-architecture-解決的痛點01.png">
 
 並不是把程式分開來寫就真的解耦了，重點在於依賴關係，這與你用微服務或是單體無關，上游改動下游就會受到影響，所以管理依賴很重要，如果把常常變動的元件當作核心會很痛苦的，在 Go 語言中你的迴圈依賴是過不了編譯器的．
 
@@ -35,6 +35,8 @@ Clean Architecture 是我讀的一本書，這本書講了架構、SOLID、作�
 ## 聊聊框架
 
 以前用 Java Spring Boot 框架，那時就覺得這根本是魔法，怎麼可以這麼方便啊！加上一個註解就幫我做好多事，依賴注入還有開箱即用真的很舒服，後來我開始寫 Go，我動手實作以前那些所謂的「魔法」，注入物件、初始化，不知道為什麼心裡反而有種踏實的感覺哈哈哈哈，畢竟以前都是讓框架來替我管理，大概是因為自己從頭寫到尾真的理解了吧，回到正題，我想說少即是多，也許你該開始思考你到底需要什麼，就像家裡面有一堆放很久沒用到的東西，之後大概也用不到，可以丟掉了．
+
+<img src="./image/clean-architecture-解決的痛點04.png">
 
 推薦大家都可以看看這本書
 
