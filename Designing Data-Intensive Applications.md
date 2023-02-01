@@ -1,6 +1,6 @@
-# 資料密集系統設計
+# 資料密集系統設計 Designing Data-Intensive Applications
 
-# Designing Data-Intensive Applications
+> 筆記作者：WeiTheShinobi
 
 ## 第一章 可靠性、可擴展性、可維護性
 
