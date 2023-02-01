@@ -187,3 +187,56 @@ Congruence modulo m
 >
 > 得 (1 + 6 + 8 ) mod 3
 
+### Equivalence relation
+
+等價關係（Equivalence relation）是具有自反性，對稱性，遞移性的二元關係
+
+"=" 是一種等價關係
+
+### Partial Orders
+
+部分排序
+
+- 自反性
+- Antisymmetric : aRb and bRa => a = b
+- 遞移性 
+
+Antisymmetric：要能排序的話，a如果能在b的前面又在b的後面，那a = b。
+
+#### example
+
+A = N(自然數); a R b <=> a|b
+
+反身性：a|b  for all <- N
+
+Antisymmetric：if a|b and b|a, than 
+
+b/a and a/b 都是正整數 and (b/a)^-1=a/b（互為倒數）
+
+因 a/b ＝1 所以 a=b
+
+遞移性： if a|b and b|c, than b=aq, c=bw, for some q, w <- N
+
+因 c = aqw, 所以 a|c
+
+#### example
+
+consider the power set P(S) of a set S
+
+Power set：S的所有部分集合所構成的集合
+
+than "<=" （包含於） is a pitial order on P(S)
+
+1. 反身性 A <= A
+2. A <= B B<= A => A=B
+3. A <= B and B <= C , than A <= C
+
+### Hasse diagram 哈斯圖
+
+a != b
+
+若 a <= b <= c
+
+則畫 a -> b, b -> c
+
+不能畫 a -> c
