@@ -240,3 +240,63 @@ a != b
 則畫 a -> b, b -> c
 
 不能畫 a -> c
+
+### total order
+
+一個集合任取兩個都能比較則為 total order
+
+---
+
+- def
+
+一個 Partial Orders 的 maximal 或 minimal 代表沒其他元素比他小或大，但這不代表他比所有人大，因為有些不能比較。
+
+- def
+
+greatest element/ least element 比所有的元素都大/小，這也代表他們跟所有元素都能比較。
+
+greatest 與 maximal 的差別在於能否比較，minimal, least 同理。
+
+- Upper bound, lower bound（上界、下界）
+
+如字面的意思，即是集合中的上下界。
+
+greatest lower bound = infimum
+
+least upper bound = supremum
+
+glb, lub 這兩個不一定會再集合中
+
+這是蠻直觀的東西，照著字面推理即可。
+
+## Principles of Counting
+
+### addition principle 加法原理
+
+A, B 皆為有限集合，且交集為空集合，則：
+
+- |A or B| = |A| + |B|
+
+### multiplication principle
+
+A, B 皆為有限集合，則：
+
+|A * B| = |A| * |B|
+
+### expample
+
+|a| = m, |b| = n （集合的長度）
+
+求 a 到 b 的做法數：
+
+a 中的每個元素會有 n 個走法
+
+所以會是 n * n * n..... * n = n^m
+
+### 不重複選擇
+
+從 set a 取 m things，求解法數
+
+`n(n-1)(n-2)...(n-m+1)`
+
+該做法就是高中學機率時的 C
