@@ -283,7 +283,7 @@ A, B 皆為有限集合，則：
 
 |A * B| = |A| * |B|
 
-### expample
+#### expample
 
 |a| = m, |b| = n （集合的長度）
 
@@ -300,3 +300,68 @@ a 中的每個元素會有 n 個走法
 `n(n-1)(n-2)...(n-m+1)`
 
 該做法就是高中學機率時的 C
+
+### permutation
+
+#### factorial
+
+`!`，譯作乘階
+
+`n! = n * (n-1)!; n >= 1; 0! = 1`
+
+#### example
+
+10個人排序，求做法數：
+
+10 * (10-1) * (10-2) ... 10-9 = 10!
+
+---
+
+10個人排序，但 p2, p3, p4 要在一起，求做法數：
+
+G = {p2, p3, p4}
+
+所以可以轉換成：p1, G, p5, p6 ... p10
+
+把三個人當成一個，這樣計算得 8!
+
+G 內的 3 人排序得 3!
+
+所以答案是 8! * 3!
+
+- unordered selection
+
+現在不管順序了，求做法數：
+
+因為不同順序都只能算一個，所以要把重複的去掉，得：
+
+`n(n-1)(n-2)(n-3)...(n-m+1) / m!`
+
+即是 binomial coefficient，與高中學的 C 不同，C 是組合數，而且 n >= m，binomial coefficient 則沒關係，唸作 n choose m。
+
+#### example
+
+set |A| = 8, 求 A 有多少 3 個元素的子集？
+
+`8 choose 3 = (8 * 7 * 6) / (3 * 2 * 1) = 56`
+
+---
+
+求 8 choose 9：
+
+當下面比上面大的時候為 0
+
+### Pascal's Identity
+
+`n choose r = (n-1 choose r-1 ) + (n-1 choose r)`
+
+不需要硬背公式，`n choose r`是有 r 個元素的子集數，`n-1 choose r-1`指子集固定有一個某數的子集數（假設為x），`n-1 choose r`則是沒有 x 的子集數。根據加分原理，兩者為空集合，所以全部數目就是兩個 size 相加。
+
+這個關係式可以畫成一個帕斯卡三角形（例：`3 choose 2 = (2 choose 1) + (2 choose 2)`）
+
+### Binomial Theorem
+
+$$
+(x+y)^n=Σ_{r=0}^{n} C(n, r) x^{n-r}y^r
+$$
+
