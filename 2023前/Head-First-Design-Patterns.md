@@ -616,7 +616,7 @@ private void test2(){
 
 ## 類別
 
-<img src="./image/Head-First-Design-Patterns/dp01.png">
+<img src="../image/Head-First-Design-Patterns/dp01.png">
 
 `RealSubject`、`Proxy`、`Subject`
 
