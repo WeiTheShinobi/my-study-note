@@ -132,3 +132,196 @@ SLR 不會有 conflict，有的話就不是 SLR
   - `shift ` if `X -> B.ay ∈ I`
   - `reduce` if `X -> B. ∈ I` and `a ∈ Follow(X)`
   - report parsing error if neither applies
+
+改良：
+
+太多重複沒效率，改成 goto[i, a] = j 就 shift 
+
+也就是如果 |a 可以到 j，那就 shift
+
+>  define goto[i, A] = j
+>
+> state i + symbol A  -> state j
+>
+> 即 DFA 的轉換 function
+
+LR(1) 更加強大，即是 LR(0) + 多看一個 item
+
+LALR(1)
+
+## Semantic analysis
+
+在前面的章節我們知道：
+
+Lexical analysis 檢測不合法的 token
+
+Parsing 檢測語法樹
+
+現在到了前端的最後一步： Semantic analysis 要檢測剩餘的錯誤
+
+怎麼這麼麻煩？因為前面兩步驟難以抓到某些錯誤
+
+parsing 抓不到某些錯誤、有些語言不是 context-free
+
+靜態分析取決於你的語言想要怎麼樣
+
+- scope（作用域）
+
+a scope table
+
+`enter_scope()`
+
+`find_symbol(x)` find current x or null
+
+`add_symbol(x)` add symbol x to the table
+
+`check_scope(x)` ture if x define in current scpoe
+
+`exit_scope()`
+
+靜態分析可能會跑很多次
+
+- Type
+
+what is type?
+
+- a set of values
+- a set of operations on those values
+
+當你從寄存器拿出數據，遇到`+`時，你如何知道怎麼做？
+
+不知道，你之所以知道是因為你定義了`int`，
+
+而`int`遇到`+`就會做數學上的加法
+
+型別檢查是為了確保在正確的型別上做正確的動作
+
+- type checking
+
+假如一個假設是對的，那結論就會是對的
+
+> a: int + b: int -> a + b : int
+>
+> a 是整數，b 是整數，a+b 是整數
+
+合理的 (sound)：
+
+whenever it is provable that "e" is of type "T", "e" must always evaluate to a value of type "T"
+
+"e" 是 type T, 那他就應該一直是 value of type T
+
+- type environment
+
+因為只有靠剛剛的假設，還是不夠，所以就加入 type environment（蠻合理的
+
+舉例來說：有一個變數，被宣告為變數，那他到底是什麼？ `var x`
+
+這東西有點像是上下文，幫忙判斷類型
+
+`var x = 5`：從此我們知道這是 int
+
+可以是個像是映射、符號表之類的東西，或者說像是一個 function
+
+舉例：當知道 e2 是 t2，就可以從此推測知道 e1 是 t1
+
+就像是對話的上下文
+
+還有一種方法：
+
+x 是 type a, y 是 type b
+
+type a 是 type b 的 sub set
+
+那 x 就會是 type b
+
+這種繼承關係可以像一棵樹一樣不斷向下
+
+## Runtime Organization
+
+動態、靜態型別
+
+```
+w: Animal = new Cat;
+（動態：Cat 靜態：Animal)
+靜態就是固定的
+動態可以改變
+```
+
+- Error Recovery
+
+使用 self_type, no_type 定義特殊的情況
+
+---
+
+作業系統執行程式：
+
+- 開闢空間
+- 把 code 放進空間
+- 找到程式進入點 (main)
+
+想了解編譯器，你要熟悉何謂靜態（編譯時期）、動態（執行時期），
+
+管理執行資源、儲存組織
+
+編譯器需要：生成程式碼、編排資料
+
+-  Activations
+
+兩個假設：程式碼照順序執行、呼叫程式執行完會回去呼叫點
+
+lifetime：函式的呼叫到結束。可以是巢狀的，就像大家都在 main 中
+
+當每個函式開始生命週期，就放進 stack，當結束就移出，
+
+那要記錄什麼內容呢？frame
+
+當 F 呼叫 G，不只紀錄 G，還有 F
+
+當 G 結束了，要回到 F，
+
+所以要記錄 Activation Records：
+
+- G
+- 回去 F
+
+編譯器產生的程式碼必須也考慮到紀錄，兩者互相依賴
+
+現在瞭解了生命週期，那全域變數呢？或者是回傳的 object 呢？
+
+他們不是應該在生命週期結束就消失了嗎？
+
+不是，他們會放在 Heap 上而是 stack。
+
+- Alignment
+
+現代計算機是 32 bit 或 64 bit
+
+8 bits = 1 byte
+
+4 or 8 byte in a word
+
+機器要對齊這些資料才能讀取，
+
+假如一個 32-bit 的機器要讀取 "Hello"
+
+那他會需要兩個 4 byte，而 "Hello" 會用掉 5 byte
+
+那剩下 3 byte 呢？不該使用
+
+某些程式語言會在字串最後加上 '\0' 來表示結束
+
+## Code Generation
+
+
+
+## 中間碼
+
+source -> intermediate -> target
+
+為何要有中間的？因為 source 太高階，我們想對某些像是寄存器之類的優化
+
+就像是高階的組合語言
+
+three-address code
+
+總之這就是一種程式碼生成
