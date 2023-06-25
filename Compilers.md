@@ -312,9 +312,67 @@ lifetime：函式的呼叫到結束。可以是巢狀的，就像大家都在 ma
 
 ## Code Generation
 
+MIPS 的計算機
+
+`$sp` : stack pointer, top of the stack is at address $sp + 4
+
+`$a0` : accumulator  register address in MIPS
 
 
-## 中間碼
+
+`lw reg1 offset(reg2)`: load 32-bit word from address `reg2 + offset` into reg1 （把reg2 放到 reg1
+
+`add reg1 reg2 reg3`: reg1 <- reg2 + reg3
+
+`sw reg1 offset(reg2)`: store 32-bit word in reg1 at address reg2 + offset （把 reg1 放到 reg2
+
+`addiu reg1 reg2 imm`: reg1 <- reg2 + imm
+
+`li reg imm` : reg <- imm
+
+> imm : immediate 立即數 像是 1, 2, 3, 4....等等
+
+
+
+`cgen(e)` : code generate
+
+cgen(e1 + e2) = cgen(e1) + cgen(e2)
+
+`jal label` : jump to label, save address of next instruction in $ra
+
+`jr reg` : jump to address in register reg
+
+- 暫存空間
+
+執行時需要的空間取決的會花費的最大空間，
+
+因為空間可以重複使用
+
+NT(e1 + e2) = max(NT(e1), 1 + NT(e2))
+
+> 一個 function call :
+>
+> 2 + n + NT(e)
+>
+> return address,
+>
+> frame pointer,
+>
+> n arguments,
+>
+> NT(e) location for intermediate results
+
+- Object Layout 
+
+物件怎麼在記憶體中表示？排在一起（classs tag, size, ptr, attributes...）
+
+物件的動態實現？
+
+
+
+## Optimization
+
+- Intermediate code
 
 source -> intermediate -> target
 
@@ -325,3 +383,103 @@ source -> intermediate -> target
 three-address code
 
 總之這就是一種程式碼生成
+
+- Optimization
+
+lexcial analysis, parsing, remantic analysis,
+
+code generation, 
+
+最後是 Optimization
+
+這是現代編譯器最重要的一步
+
+在何時優化？
+
+Intermediate，既可以跨機器，又不會太高階
+
+確保結果是一致的，執行速度、大小
+
+### Local optimization
+
+優化 block，大部分編譯器會做的事情
+
+ 有些句子不需要
+
+ x := x + 0
+
+ x := x * 1
+
+ 有些可以被簡化
+
+ x := x * 0
+
+ x := 0
+
+ y := y**y
+
+ y := y * y
+
+常數操作可以被直接計算替代
+
+- 有時是危險的
+
+cross compile 兩個浮點數相加
+
+在不同架構可能會得出不一樣的答案
+
+- 移除不到抵達的 code，可以更快、更小
+
+- dead code
+
+一個變數被宣告但用不到，可以被移除
+
+- Cache
+
+編譯器很會分配寄存器
+
+考慮兩種寫法：
+
+```python
+for j in range(10):
+  for i in range(10000000):
+    a[i] *= b[i]
+```
+
+```python
+for i in range(10000000):
+  for j in range(10):
+    a[i] *= b[i]
+```
+
+第二種寫法會快不少，
+
+因為第二種寫法一直計算同一件事
+
+可以更好地利用 cache
+
+- 垃圾回收演算法
+
+垃圾回收會把無法抵達的指標給釋放
+
+- Stop and Copy 
+
+開闢一個新的空間，
+
+從根節點開始複製到新空間，
+
+再來是根節點的指向的指標，
+
+直到沒有新的節點。
+
+清除所有舊的節點
+
+優點：最快、解決碎片化
+
+- Reference Counting
+
+在指標紀錄被指向的次數，
+
+當為零時就釋放。
+
+缺點是不能有循環
