@@ -1,3 +1,10 @@
+---
+author: WeiTheShinobi
+title: Clean Architecture 替我解決的痛點
+date: 2023-01-07
+description: Clean Architecture 替我解決的痛點
+---
+
 # Clean Architecture 替我解決的痛點
 
 WeiTheShinobi

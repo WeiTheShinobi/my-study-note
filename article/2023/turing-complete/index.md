@@ -1,3 +1,9 @@
+---
+author: WeiTheShinobi
+title: 如何在 Steam 上玩接電線？《Turing Complete》
+date: 2023-04-06
+description: 如何在 Steam 上玩接電線？《Turing Complete》
+---
 # 如何在 Steam 上玩接電線？《Turing Complete》
 
 作為一個 Steam 重度用戶，我平時沒事就是逛逛商店，某次意外的發現這個超讚的遊戲，就被這樸實的畫面所吸引，又因為我本就喜歡建造經營類的遊戲，舉例像是《Rimworld》就是個超讚的遊戲，我十分推薦。而這次發現的遊戲就是《Turing Complete》，就是常常聽到的那個圖靈完備，在遊戲中玩家扮演一個實驗體，作為一個被外星人抓來研究的地球生物，將為了保住小命而做出圖靈完備的計算機。

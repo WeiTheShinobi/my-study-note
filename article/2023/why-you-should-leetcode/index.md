@@ -1,3 +1,9 @@
+---
+author: WeiTheShinobi
+title: 為什麼你應該刷題？超乎想像的巨大收益
+date: 2023-02-11
+description: 為什麼你應該刷題？超乎想像的巨大收益
+---
 # 為什麼你應該刷題？超乎想像的巨大收益
 
 <img src="01.png">

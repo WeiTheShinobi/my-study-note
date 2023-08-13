@@ -1,3 +1,10 @@
+---
+author: WeiTheShinobi
+title: 會打字就行！用 Go 語言實作好玩小專案：tree
+date: 2023-02-25
+description: 會打字就行！用 Go 語言實作好玩小專案：tree
+---
+
 # 會打字就行！用 Go 語言實作好玩小專案：tree
 
 <img src="01.png">

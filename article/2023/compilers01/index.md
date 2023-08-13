@@ -1,3 +1,9 @@
+---
+author: WeiTheShinobi
+title: 一起學習編譯器吧_01
+date: 2023-02-28
+description: 一起學習編譯器吧_01
+---
 # 一起學習編譯器吧_01
 
 <img src="01.png">
