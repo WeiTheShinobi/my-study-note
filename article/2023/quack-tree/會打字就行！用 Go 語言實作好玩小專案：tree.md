@@ -1,6 +1,6 @@
 # 會打字就行！用 Go 語言實作好玩小專案：tree
 
-<img src="../image/quack-tree/01.png">
+<img src="01.png">
 
 tree 是一個**很讚的工具**，它可以把你的資料夾底下的檔案弄成一個樹的型狀，非常的酷。**實作這個工具不難**，而且也可以擴充很多很酷的功能，本篇將帶大家實作最基本的功能：**遞迴印出資料夾下的檔案**，我們會使用 Go 語言來實作，一起動動手吧！
 
@@ -48,7 +48,7 @@ func main() {
 }
 ```
 
-<img src="../image/quack-tree/02.png">
+<img src="02.png">
 
 ## 開始
 
@@ -130,7 +130,7 @@ func Build(path string) (*Dir, error) {
 
 這裡思路是這樣的：`Build`出一個節點，`Build`出它的子節點，重複做下去。
 
-<img src="../image/quack-tree/04.png">
+<img src="04.png">
 
 ### 步驟二：印出
 
@@ -254,7 +254,7 @@ quack-tree
 
 當然在你可能還需要實作一個**命令列參數分析**來解析輸入，讓程式知道需要做什麼，然後你就可以用`-a`、 `--help`等等之類的神奇魔法來控制程式，就像在用其他功能一樣，像是`ls -a`。
 
-<img src="../image/quack-tree/03.png">
+<img src="03.png">
 
 ## 結語
 
