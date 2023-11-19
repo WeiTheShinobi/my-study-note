@@ -1,3 +1,10 @@
+---
+author: WeiTheShinobi
+title: 手把手帶你使用狀態機！以 LeetCode 65. Valid Number 示範
+date: 2023-09-28
+description: 手把手帶你使用狀態機！以 LeetCode 65. Valid Number 示範
+---
+
 # 手把手帶你使用狀態機！以 LeetCode 65. Valid Number 示範
 
 <img src="01.png">
