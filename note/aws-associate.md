@@ -1,0 +1,90 @@
+- 使用 CORS 避免其他網域連線到你的伺服器
+- time out 通常是 security groups，他就像一個防火牆，可以設定出入口
+- 不需要看到不懂的就直接放棄，你可以從選項跟服務去推敲最不可能的答案
+- SQS 可以接受 256 KB
+- kinesis data stream 可以即時接收大流量的數據，吞吐量需要手動設定碎片，更加靈活、可以設定下游。firehose 更加自動化，易用、被完全託管不用設定，資料可以送至 S3 去分析，但比較封閉，消費者相較不那麼靈活。
+- SQS 中，dead-letter queue 必須和原本的 queue 是同一個 type
+- S3 資源訪問，使用 IAM role 跨分區是不允許的，因為每個分區是獨立的。但可以使用 IAM 策略，他可以設置 S3 誰可以訪問、訪問物件、如何訪問。
+- 應對超過負載（throttling）最好的方法是指數重試
+- 設置 lambda 連線到 VPC
+- 因為 NACL 是無狀態的，而 Security Groups 是有狀態的，有狀態的話，當發出請求再遇到 response 回來，不會被攔下。
+  - NACL 是 VPC 層級的防火牆，無狀態，可以設定出入規則，可以拒絕流量
+- AWS CDK 設施即代碼
+- application load balancer 提供 log
+- CloudTrail logs 可以存在 S3
+- ec2 user data 是 instance 創建時會執行的腳本，擁有最高權限且只執行一次
+- auto scaling group 沒辦法跨區域
+- AWS CloudFormation StackSets 
+- IAM Access Analyzer 可以檢查服務的權限
+- API gateway 提供自定義不同的階段，dev, prod...
+- API gateway 提供 mapping template，方便轉換最終的格式，就像真的把開發的部分拆分出來
+- Rolling 和 Rolling with Additional Batch 差別在於一個是逐步更新，另一個是先增加 instance 再慢慢汰換舊的
+- SQS：使用要處理的消息數當作拓展指標可能不準確，而是思考處理的可接受延遲
+- CNAME 用途將一個 DNS 映射到另一個 DNS
+- A RECORD 將一個 domain 映射到 IP
+- PTR RECORD 反向 IP，將 IP映射到 domain
+- 何謂 resource-based policy？ 相較於 IAM 把權限定義在 role 上，讓使用者可以做些什麼，資源策略則是設定讓資源可以被怎麼使用。
+- api gateway 可以使用訪問計畫，限制特定 key 到不同結果
+- header 是 aws:kms 用來表達使用到 kms 服務，只是服務端加密要使用 AES256
+- AWS SQS: delete queue 會刪除整個 queue, purge queue 只會清除 queue 裡的元素，如同 purge 的意思
+- elastic beanstalk 某些策略在部署或更新期間替換所有實例。這導致所有已累積的Amazon EC2爆發餘額都會丟失。這發生在以下情況：
+  - 啟用了實例替換的托管平台更新
+  - 不可變更新
+  - 啟用了不可變更新或交通分流的部署
+- EBS `.ebextensios/` 中的資源會被創建，並跟著 EBS 關閉時一起被刪除
+- blue-green deployments（藍綠部署）：部署綠色新版本，將藍色舊版本的流量慢慢導向綠色新版本。
+- KMS 保管著 CMK（customer master key）
+- aws 預算監控，預測模式：需要五週的時間來收集資料，才能夠產生預測
+- aws ebs 設定檔放在 `.ebextensions/`
+- cloud formation template: `!FindInMap [ MapName, TopLevelKey, SecondLevelKey ]`
+- CloudFront Key Pairs 只能由 root account 建立
+- Lambda alias（別名）只能指向版本，不能指向另一個 alias
+- aws stack set 是一個集合，讓你可以重複使用，就像一個模板，用以部署 cloudformation
+- ssh 公鑰生成私鑰
+- CloudWatch 提供一般監控和詳細監控，標準是一分鐘、高解析度可以到每秒
+- SQS 並沒有最大訊息限制，但有傳輸中訊息限制（in-flight messages）：120000
+- 你可以替 VPC subnet 建立 log 以監控流量： vpc flow log
+- Api gateway，每次更新都要 redeploy
+- AWS Security Token Service (STS) 可以提供臨時的憑證，以 IAM 為主體，且可以跨帳號。API Gateway 不支援
+- DynamoDB 提供條件寫入，可以限制像是主鍵重複時不寫入等等
+- Amazon Elastic Block Store (Amazon EBS) 提供區塊層級儲存體磁碟區，可搭配使用 EC2 執行個體。
+- Cognito Sync 提供數據同步，不用自建，還可共同推播，是移動端的好朋友
+- 替 lambda 配置 Application Auto Scaling，來滿足大流量，大流量會帶來大量 concurrency，配置預留 provisioned concurrency 降低創建新 instance 的延遲。
+- CodeDeploy 在根目錄 `appspec.yml`用以在部署過程驗證
+- Lambda 的記憶體決定 CPU 的能力，調整記憶體以增強 CPU
+- kms 加密只有 4 kb，超過就要使用信封加密（Envelope Encryption）
+- Drift Detection feature of CloudFormation
+- AWS 建議：使用 AWS Systems Manager Parameter Store 存取key, 憑證等敏感資訊，配上`/`分層更好管理
+- X-Ray sampling 用來採樣一小部分的請求而不是全部，用以減少費用、數據量
+- kms 需要 IAM 權限
+- aws step function：standard 較慢可人工審核、最長一年，express 高速、最長 5 分鐘
+- SQS 限制訊息大小為 256 kb，使用 extended client 可以擴大至 2 GB
+- Lambda 可以預留來處理高並行，但並不能處理單一的大運算，要提高記體來處理
+- AWS CodeDeploy 可以使用藍綠部署
+-  Elastic Load Balancing 將客戶端的 IP 位址儲存在 X-Forwarded-For 請求標頭中，並將該標頭傳遞到您的伺服器。
+- RDS 自動備份僅能保存 0~35 天，想要長期備份需要手動設定，例如 cloudwatch cron event + lambda
+- S3 有四種機制來控制存取：IAM, ACLs, bucket policies, Query String Authentication（又稱 presigning url）
+- CodeBuild 自動擴展，組織無需執行任何擴展或並行建置操作
+- CodeDeploy: Application Stop -> Before Install -> Application Start -> ValidateService
+- cloudformation 使用 cli 打包：`cloudformation package` and `cloudformation deploy`
+- CloudFront 提供 https
+- CloudFromation 可以 export 輸出值，讓其他 stack 使用：Fn::ImportValue 
+- Redis cluster：無法手動將副本升為主節點。需要多個可用區。只能透過備份還原變更結構
+- 因為 load balancer 之類的程式使用 port 1024-65535，所以 VPC 無法連線可能需要允許這些 port
+- 在 aws cli 使用 `associate-kms-key` 指令關聯，加密 CloudWatch Logs
+- dynamoDB 最終一致性需要的讀取單位是強一致性的一半
+- S3 儲存桶擁有者還需要是物件擁有者才能取得物件存取日誌
+- 寫出 S3 給其他帳戶流程
+  - A 替 role 設定權限政策
+  - A 替 role 設定信任政策，標示 B 可以使用該 role
+  - B 使用該 role，便可以在 B 帳號使用 A 的資源（role 權限）
+- CloudWatch 預設沒有記憶體使用率的資料（但有 CPU），要使用 cron job 自訂指標送到 CloudWatch
+- IAM  AWS Security Token Service (AWS STS) 可以解碼 AWS 傳回的訊息
+- iam 可以使用 git 生成憑證
+- 伺服器端加密：
+  - SSE-S3: **AES256**
+  - SSE-KMS: **aws:kms**
+  - SSE-C 客戶提供 key，因此必須使用 https，否則會被拒絕
+- 您可以建立 Lambda 函數並指示 CloudWatch Events 定期執行它。您可以指定固定速率（例如，每小時或每 15 分鐘執行一次 Lambda 函數），也可以指定 Cron 表達式。
+- AWS CodeCommit 儲存庫中的資料在傳輸過程中和靜態時都會進行加密
+- 
