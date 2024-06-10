@@ -1,5 +1,7 @@
 # 淺談 Rust 的 marco
 
+> WeiTheShinobi 的筆記
+
 相較於 C，Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹，容易避免意料之外的 bug。marco 會在編譯器的 parse 階段進行。
 
 ```rust

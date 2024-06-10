@@ -1,4 +1,6 @@
-# 編譯器設計
+# 編譯器設計 Engineering a compiler
+
+> WeiTheShinobi 的讀書筆記
 
 ## 一、簡介
 
