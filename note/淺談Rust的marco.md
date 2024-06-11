@@ -1,8 +1,16 @@
-# 淺談 Rust 的 marco
+# 快速上手 Rust 的 marco
 
 > WeiTheShinobi 的筆記
 
-相較於 C，Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹，容易避免意料之外的 bug。marco 會在編譯器的 parse 階段進行。
+相較於 C，Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹，較容易避免意料之外的 bug，marco 會在編譯器的 parse 階段進行。
+
+marco 才能做到的事 in Rust：
+
+- 形參的數量是可變的
+- 替 `struct`生成 function, field... 等等
+
+---
+
 
 ```rust
 marco_rules! vec {
@@ -90,3 +98,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
 ### Reference
 
 [Procedural Macros - The Rust Reference (rust-lang.org)](https://doc.rust-lang.org/reference/procedural-macros.html)
+
+[巨集 - Rust 程式設計語言 (rust-lang.tw)](https://rust-lang.tw/book-tw/ch19-05-macros.html)
+
+[Procedural Macros in Rust (part 1) (youtube.com)](https://www.youtube.com/watch?v=geovSK3wMB8&list=PLqbS7AVVErFgwC_HByFYblghsDsD5wZDv)
