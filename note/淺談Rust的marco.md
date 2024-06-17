@@ -2,18 +2,22 @@
 
 > WeiTheShinobi 的筆記
 
-相較於 C，Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹，較容易避免意料之外的 bug，marco 會在編譯器的 parse 階段進行。
+Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹，較容易避免意料之外的 bug，marco 會在編譯器的 parse 階段進行。
 
 marco 才能做到的事 in Rust：
 
 - 形參的數量是可變的
-- 替 `struct`生成 function, field... 等等
+- 替 `struct`, `function` 生成 function, field... 等等
 
 ---
 
+## 宣告式巨集
 
 ```rust
+#[macro_export] // 只要可見即可使用
 marco_rules! vec {
+  // $ 代表巨集變數
+  // 類似 match 語法，匹配條件
   ($($e:expr), *) => {{
     let mut v = Vec::new();
     $(v.push($e);)*
@@ -24,24 +28,37 @@ marco_rules! vec {
 vec![]
 ```
 
-- Procedural Marco：在 compile 時，轉換成  token stream，取代或添加在原本的 token
+## Procedural Marco
 
-derive, function-like, attribute
+在 compile 時，接收 token stream，取代或添加在原本的 token
+
+三種 procudural marco：
+
+- derive
+- function-like
+- attribute
 
 ```rust 
-extern crate proc_marco;
+extern crate proc_marco; // 需要引入這個 Compiler 給我們的 crate
 ```
 
-Compiler 特別給我們的 crate
+- proc_marco
+- proc_marco_derive
+- proc_marco_attr
 
-proc_marco, proc_marco_derive, proc_marco_attr
+---
+
+
 
 ```rust
-[#proc_marco_derive(name_you_want)]
+// #[derive(NameYouWant)]
+[#proc_marco_derive(NameYouWant)]
 // pub is necessary
 pub fn derive(input: TokenStream) -> TokenStream {
   // 解析成 ast
   let ast = parse_marco_input!(input as DeriveInput);
+  // let ast = syn::parse(input).unwrap();
+  
   let name = &ast.ident;
   // 用於生成 TokenStream 的 marco
   // 會將輸入轉換成一堆 tokens
@@ -57,7 +74,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
 }
 ```
 
-編寫 procedural marco 會大量用到 syn package，這個 package 提供關於 syntax tree 的相關功能。
+編寫 procedural marco 會大量用到 syn crate，這個 crate 提供關於 syntax tree 的相關功能。
 
 ```rust
 [#proc_marco_derive(name_you_want)]

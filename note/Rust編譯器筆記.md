@@ -42,3 +42,16 @@ parser 使用 recursive descent (top-down) approach
 
 ## 如何做到？
 
+compiler 需要在編譯速度、大小、執行速度等等多個維度做出取捨。
+
+### IR in Rust
+
+- Token stream: produce from lexer
+- AST
+- HIR
+- THIR：
+- MIR: control-flow graph，借用檢查、數據流檢查
+- LLVM-IR: standard form of LLVM compiler
+
+### Queries
+
