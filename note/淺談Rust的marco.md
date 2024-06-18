@@ -2,12 +2,13 @@
 
 > WeiTheShinobi 的筆記
 
-Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹，較容易避免意料之外的 bug，marco 會在編譯器的 parse 階段進行。
+Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹（AST），較容易避免意料之外的 bug。
 
 marco 才能做到的事 in Rust：
 
 - 形參的數量是可變的
 - 替 `struct`, `function` 生成 function, field... 等等
+- 條件編譯
 
 ---
 
@@ -110,12 +111,28 @@ pub fn derive(input: TokenStream) -> TokenStream {
   };
 ```
 
+## 條件編譯
 
+```rust
+#[cfg_attr(debug_assertions, derive(Debug))]
+struct MyStruct {
+    field: i32,
+}
+
+fn main() {
+    let my_struct = MyStruct { field: 10 };
+
+    #[cfg(debug_assertions)]
+    println!("{:?}", my_struct); 
+  	// 在 debug 模式才會編譯
+  	// cargo run --release 則不會
+}
+```
+
+延伸閱讀：[Quick tip: the #[cfg_attr] attribute - an article by Chris Morgan](https://chrismorgan.info/blog/rust-cfg_attr/)
 
 ### Reference
 
 [Procedural Macros - The Rust Reference (rust-lang.org)](https://doc.rust-lang.org/reference/procedural-macros.html)
 
 [巨集 - Rust 程式設計語言 (rust-lang.tw)](https://rust-lang.tw/book-tw/ch19-05-macros.html)
-
-[Procedural Macros in Rust (part 1) (youtube.com)](https://www.youtube.com/watch?v=geovSK3wMB8&list=PLqbS7AVVErFgwC_HByFYblghsDsD5wZDv)

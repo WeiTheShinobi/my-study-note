@@ -55,3 +55,14 @@ compiler 需要在編譯速度、大小、執行速度等等多個維度做出�
 
 ### Queries
 
+編譯器會進行 incremental compilation，這可以減少重複的編譯工作。編譯器上的步驟會被 query system 紀錄，並且 cache 在 disk 中，編譯器便可以此來分辨結果與上次的變化，並且只重做有變化的部分，這就是 incremental compilation 的工作原理。
+
+All queries are defined as methods on the `TyCtxt`) type
+
+### ty::Ty
+
+`rustc_middle::ty::Ty` 非常重要，
+
+### Bootstrapping
+
+`dogfood`，rust 的新編譯器是舊編譯器編譯的。這個行為稱作 Bootstrapping
