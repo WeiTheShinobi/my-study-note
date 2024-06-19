@@ -1,5 +1,7 @@
 # 快速上手 Rust 的 marco
 
+<img src="01.jpeg">
+
 極快的介紹 Rust 中的 marco 並附上案例與參考連結。Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹（AST），較容易避免意料之外的 bug。
 
 marco 才能做到的事 in Rust：
@@ -81,7 +83,7 @@ pub fn derive(input: TokenStream) -> TokenStream {
 }
 ```
 
-編寫 procedural marco 會大量用到 syn crate，這個 crate 提供關於 syntax tree 的相關功能。
+編寫 procedural marco 會大量用到 syn，它提供關於 syntax tree 的相關功能。
 
 ```rust
 [#proc_marco_derive(name_you_want)]
