@@ -137,7 +137,7 @@ lexer 在編譯器的第一階段，lexer 讀取 source code 轉換成 token str
 一個上下文無關語法加上一組規則
 
 
-| Number -> Sign List | List.position <- 0<br>if Sign.negative<br>then Number.value <- - List.value<br>else Number.value <- List.value |
+| Number -> Sign List | List.position <- 0<br>if Sign.negative<br>then Number.value <- -List.value<br>else Number.value <- List.value |
 | --------------------- | ------------------ |
 | ... | ... |
 

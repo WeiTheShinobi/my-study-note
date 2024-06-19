@@ -1,14 +1,12 @@
 # 快速上手 Rust 的 marco
 
-> WeiTheShinobi 的筆記
-
-Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹（AST），較容易避免意料之外的 bug。
+極快的介紹 Rust 中的 marco 並附上案例與參考連結。Rust 中的 marco 並不是單純的替換，而是生成抽象語法樹（AST），較容易避免意料之外的 bug。
 
 marco 才能做到的事 in Rust：
 
 - 形參的數量是可變的
 - 替 `struct`, `function` 生成 function, field... 等等
-- 條件編譯
+- 其他 ...
 
 ---
 
@@ -31,21 +29,29 @@ vec![]
 
 ## Procedural Marco
 
-在 compile 時，接收 token stream，取代或添加在原本的 token
+接收 token stream，取代或添加在原本的 token
 
 三種 procudural marco：
 
 - derive
-- function-like
-- attribute
+- function-like：用起來像是宣告式巨集，但 procudural marco 提供更為靈活的操作。下為文檔的 example：
 
-```rust 
-extern crate proc_marco; // 需要引入這個 Compiler 給我們的 crate
+```rust
+#[proc_macro]
+pub fn make_answer(_item: TokenStream) -> TokenStream {
+    "fn answer() -> u32 { 42 }".parse().unwrap()
+}
+```
+```rust
+make_answer!();
+fn main() {
+    println!("{}", answer());
+}
 ```
 
-- proc_marco
-- proc_marco_derive
-- proc_marco_attr
+- attribute
+
+
 
 ---
 
@@ -107,6 +113,8 @@ pub fn derive(input: TokenStream) -> TokenStream {
     struct #newIden {
       // 需要明確的路徑，否則錯誤
       let a = std::cmp::min(3, 5);
+      // wrong
+      // let a = min(3, 5)
     }
   };
 ```
