@@ -49,7 +49,7 @@ compiler 需要在編譯速度、大小、執行速度等等多個維度做出�
 - Token stream: produce from lexer
 - AST
 - HIR
-- THIR：
+- THIR
 - MIR: control-flow graph，借用檢查、數據流檢查
 - LLVM-IR: standard form of LLVM compiler
 
@@ -66,3 +66,18 @@ All queries are defined as methods on the `TyCtxt`) type
 ### Bootstrapping
 
 `dogfood`，rust 的新編譯器是舊編譯器編譯的。這個行為稱作 Bootstrapping
+
+---
+
+- `compiler/` contains the source code for `rustc`. It consists of many crates that together make up the compiler.
+- `library/` contains the standard libraries (`core`, `alloc`, `std`, `proc_macro`, `test`), as well as the Rust runtime (`backtrace`, `rtstartup`, `lang_start`).
+- `tests/` contains the compiler tests.
+- `src/` contains the source code for rustdoc, clippy, cargo, the build system, language docs, etc.
+
+從 `cargo.toml` 可以觀察到資料夾的依賴關係，在 AST 和其他早期分析建構完成，query system 會開始建構，它定義於 `rustc_middle` 中。
+
+在依賴樹的上層是`rustc_driver`和`rustc_interface`，`driver`會被 `main` 韓式
+
+---
+
+rust compiler 依然在從傳統的 `pass-based` 過渡到 `demand-driven`，
