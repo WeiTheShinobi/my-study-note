@@ -34,7 +34,7 @@ parser 使用 recursive descent (top-down) approach
 
 在這個階段會做很多優化，在此階段 rust code 也會 monomorphized，
 
-將所以泛型用具體類型替換並複製一份
+將所以泛型用具體類型替換並複製一份.
 
 - code generation
 
